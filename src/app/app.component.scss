@@ -1,0 +1,19 @@
+@import "../styles/base";
+
+.title-bar {
+  display: flex;
+
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: .5rem;
+  }
+
+  .right-column {
+    flex: 1 1 auto;
+    background-color: $primary-colour;
+    color: white;
+    text-align: center;
+  }
+}

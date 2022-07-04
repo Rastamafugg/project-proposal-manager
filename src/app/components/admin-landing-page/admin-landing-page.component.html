@@ -1,0 +1,19 @@
+<div class="admin-tools">
+  <div class="provincial-link">
+    <a routerLink="/provincial" routerLinkActive="active">
+      <button mat-icon-button color="primary" aria-label="Provincial">
+        <mat-icon>language</mat-icon> Provincial Landing Page
+      </button>
+    </a>
+  </div>
+</div>
+
+<div class="admin-tools">
+  <div *ngFor="let municipality of municipalities" class="municipal-link">
+    <a [routerLink]="['/municipal', municipality.code]" routerLinkActive="active">
+      <button mat-icon-button color="primary" aria-label="Municipal">
+        <mat-icon>location_city</mat-icon> {{municipality.label}} Landing Page
+      </button>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,199 @@
+<div class="page-title">
+  <h2 class="page-title-text">Allocation Amounts & CIP Commitments</h2>
+  <div class="page-title-buttons">
+    <button [disabled]="!aersForm.dirty" class="page-title-button" mat-raised-button matTooltip="Submit Changes" color="primary" aria-label="Submit Changes" (click)="submitAERs()">
+      <mat-icon>save</mat-icon>
+    </button>
+    <button class="page-title-button" mat-raised-button matTooltip="Print Screen" color="primary" aria-label="Print Screen" (click)="printPage()">
+      <mat-icon>print</mat-icon>
+    </button>
+    <button class="page-title-button" mat-raised-button matTooltip="Back" color="primary" aria-label="Back" (click)="goToPreviousPage()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div class="page-section">
+  <div class="page-section-body">
+    <div class="readonly-field full-width">
+      <div class="label">Municipality</div>
+      <div class="value">{{getMunicipalityName()}}</div>
+    </div>
+  </div>
+</div>
+
+<div class="page-section">
+  <h2 class="page-section-title">Funds Received FY 2014-2015 to FY 2018-2019</h2>
+
+  <div class="page-section-body">
+    <table mat-table class="financing full-width" [dataSource]="getPrevious5YearReportTableData()">
+      <ng-container matColumnDef="label">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let rowData">
+          {{rowData.label}}
+        </td>
+      </ng-container>
+      <ng-container *ngFor="let year of getPrevious5YearReportColumns(); index as x">
+        <ng-container *ngIf="x > 0 && x < 6" [matColumnDef]="year">
+          <th class="align-right" mat-header-cell *matHeaderCellDef><strong>{{getFiscalYearLabel(year)}}</strong></th>
+          <td class="align-right" mat-cell *matCellDef="let rowData">
+            {{rowData[year] | currency}}
+          </td>
+        </ng-container>
+      </ng-container>
+      <ng-container matColumnDef="total">
+        <th class="align-right" mat-header-cell *matHeaderCellDef><strong>{{getFiscalYearLabel(2014)}} to {{getFiscalYearLabel(2018)}}</strong></th>
+        <td class="align-right" mat-cell *matCellDef="let rowData">
+          {{rowData.total | currency}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="spacer">
+        <th mat-header-cell *matHeaderCellDef colspan="6"><strong></strong></th>
+      </ng-container>
+      <ng-container matColumnDef="totalFundsAvailable">
+        <th class="align-right" mat-header-cell *matHeaderCellDef><strong>Total Funds</strong></th>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['spacer', 'totalFundsAvailable']"></tr>
+      <tr mat-header-row *matHeaderRowDef="getPrevious5YearReportColumns()"></tr>
+      <tr mat-row *matRowDef="let row; columns: getPrevious5YearReportColumns();"></tr>
+    </table>
+  </div>
+</div>
+
+
+<div class="page-section print-page-break">
+  <h2 class="page-section-title">Funds Received FY 2019-2020 to FY 2023-2024</h2>
+
+  <div class="page-section-body">
+    <form [class]="getAllocationAmountFormClasses()" [formGroup]="allocationAmountForm">
+      <div class="readonly-field half-width">
+        <div class="label">Fiscal Year</div>
+        <div class="value">{{getFiscalYearLabel(allocationAmountForm.get('fiscalYear').value)}}</div>
+      </div>
+      <div class="half-width">
+      </div>
+      <mat-form-field class="half-width">
+        <input matInput type="number" formControlName="allocationReceived" placeholder="Allocation Received">
+        <mat-error *ngIf="allocationAmountForm.get('allocationReceived').errors?.required">Allocation Received is required</mat-error>
+        <mat-error *ngIf="allocationAmountForm.get('allocationReceived').errors?.min">Allocation Received cannot be a negative number</mat-error>
+      </mat-form-field>
+      <mat-checkbox color="primary" class="half-width" formControlName="applyForward"> Apply allocation to subsequent years?</mat-checkbox>
+      <div class="half-width">
+        <button [disabled]="allocationAmountForm.invalid" mat-raised-button matTooltip="Save Allocation Amount" aria-label="Save Allocation Amount" color="primary" class="expandable-form-button" (click)="saveAllocationAmount()">
+          <mat-icon>save</mat-icon>
+        </button>
+        <button mat-raised-button matTooltip="Cancel" aria-label="Cancel" color="primary" class="expandable-form-button" (click)="cancelAllocationAmount()">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </div>
+    </form>
+    <table #current5YearReport mat-table class="financing full-width" [dataSource]="getCurrent5YearReportTableData()">
+      <ng-container matColumnDef="label">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let rowData">
+          {{rowData.label}}
+        </td>
+      </ng-container>
+      <ng-container *ngFor="let year of getCurrent5YearReportColumns(); index as x">
+        <ng-container *ngIf="x > 0 && x < 6" [matColumnDef]="year">
+          <th class="align-right" mat-header-cell *matHeaderCellDef><strong>{{getFiscalYearLabel(year)}}</strong></th>
+          <td class="align-right" mat-cell *matCellDef="let rowData; index as y">
+            <span *ngIf="y === 1" class="editable-row" (click)="editAllocationAmount(year, rowData[year])">
+              {{rowData[year] | currency}}
+            </span>
+            <span *ngIf="y !== 1">
+              {{rowData[year] | currency}}
+            </span>
+          </td>
+        </ng-container>
+      </ng-container>
+      <ng-container matColumnDef="total">
+        <th class="align-right" mat-header-cell *matHeaderCellDef><strong>{{getFiscalYearLabel(2019)}} to {{getFiscalYearLabel(2023)}}</strong></th>
+        <td class="align-right" mat-cell *matCellDef="let rowData">
+          {{rowData.total | currency}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="spacer">
+        <th mat-header-cell *matHeaderCellDef colspan="6"><strong></strong></th>
+      </ng-container>
+      <ng-container matColumnDef="totalFundsAvailable">
+        <th class="align-right" mat-header-cell *matHeaderCellDef><strong>Total Funds</strong></th>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['spacer', 'totalFundsAvailable']"></tr>
+      <tr mat-header-row *matHeaderRowDef="getCurrent5YearReportColumns()"></tr>
+      <tr mat-row *matRowDef="let row; columns: getCurrent5YearReportColumns();"></tr>
+    </table>
+  </div>
+</div>
+
+<div class="page-section print-page-break">
+  <h2 class="page-section-title">CIP Commitments</h2>
+
+  <div class="page-section-body">
+    <table mat-table class="financing full-width" [dataSource]="getCIPCommitmentsReportTableData()">
+      <ng-container matColumnDef="projectName">
+        <th mat-header-cell *matHeaderCellDef><strong>Project Title</strong></th>
+        <td mat-cell *matCellDef="let rowData">
+          {{rowData.projectName}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="projectNumber">
+        <th class="align-centre" mat-header-cell *matHeaderCellDef><strong>Project Number</strong></th>
+        <td class="align-centre" mat-cell *matCellDef="let rowData">
+          {{rowData.projectNumber}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="projectStatus">
+        <th class="align-centre" mat-header-cell *matHeaderCellDef><strong>Project Status</strong></th>
+        <td class="align-centre" mat-cell *matCellDef="let rowData">
+          {{getStateText(rowData.projectStatus)}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="previous5YearCommitment">
+        <th class="align-right" mat-header-cell *matHeaderCellDef><strong>Committed In FY 14/15 To FY 18/19</strong></th>
+        <td class="align-right" mat-cell *matCellDef="let rowData">
+          {{rowData.previous5YearCommitment | currency}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="current5YearCommitment">
+        <th class="align-right" mat-header-cell *matHeaderCellDef><strong>Committed In FY 19/20 To FY 23/24</strong></th>
+        <td class="align-right" mat-cell *matCellDef="let rowData">
+          {{rowData.current5YearCommitment | currency}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totalCommitment">
+        <th class="align-right" mat-header-cell *matHeaderCellDef><strong>Total Permanent Gas Tax Committed</strong></th>
+        <td class="align-right" mat-cell *matCellDef="let rowData">
+          {{rowData.totalCommitment | currency}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totalFundsCommittedLabel">
+        <td mat-footer-cell *matFooterCellDef><strong>Total Committed</strong></td>
+      </ng-container>
+      <ng-container matColumnDef="totalPrevious5YearCommitment">
+        <td class="align-right" mat-footer-cell *matFooterCellDef>{{totalPrevious5YearCommitment | currency}}</td>
+      </ng-container>
+      <ng-container matColumnDef="totalCurrent5YearCommitment">
+        <td class="align-right" mat-footer-cell *matFooterCellDef>{{totalCurrent5YearCommitment | currency}}</td>
+      </ng-container>
+      <ng-container matColumnDef="totalFundsCommitment">
+        <td class="align-right" mat-footer-cell *matFooterCellDef>{{totalOverallCommitment | currency}}</td>
+      </ng-container>
+      <ng-container matColumnDef="spacer">
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="getCIPCommitmentsReportColumns()"></tr>
+      <tr mat-row *matRowDef="let row; columns: getCIPCommitmentsReportColumns();"></tr>
+      <tr mat-footer-row *matFooterRowDef="['totalFundsCommittedLabel', 'spacer', 'spacer', 'totalPrevious5YearCommitment', 'totalCurrent5YearCommitment', 'totalFundsCommitment']"></tr>
+    </table>
+  </div>
+</div>
+
+<div class="page-footer-buttons">
+  <button [disabled]="!aersForm.dirty" class="page-footer-button" mat-raised-button matTooltip="Submit Changes" color="primary" aria-label="Submit Changes" (click)="submitAERs()">
+    <mat-icon>save</mat-icon>
+  </button>
+</div>

@@ -1,0 +1,7 @@
+@import "../../../styles/base";
+@import "../../../styles/readonly-fields";
+
+.allocation-amount-form {
+  @include expandable-form;
+  max-height: 16rem;
+}

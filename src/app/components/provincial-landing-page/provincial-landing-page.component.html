@@ -1,0 +1,358 @@
+<div class="page-title">
+  <h2 class="page-title-text">Provincial View</h2>
+  <div class="page-title-buttons">
+    <button class="page-title-button" mat-raised-button matTooltip="Print Screen" color="primary" aria-label="Print Screen" (click)="printPage()">
+      <mat-icon>print</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div class="page-section">
+  <h2 class="page-section-title">
+    Municipal Projects
+  </h2>
+  <div class="page-section-body">
+    <mat-tab-group class="full-width">
+      <mat-tab label="Active Projects">
+        <ng-container *ngIf="getActivePlans().length > 0">
+          <table mat-table class="projects-list" [dataSource]="getActivePlans()">
+            <ng-container matColumnDef="municipality">
+              <th mat-header-cell *matHeaderCellDef>Municipality</th>
+              <td mat-cell *matCellDef="let plan">
+                {{getMunicipalityName(plan.municipalCode)}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="projectName">
+              <th mat-header-cell *matHeaderCellDef>Project Name</th>
+              <td mat-cell *matCellDef="let plan">
+                {{plan.projectTitle}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef>Amount</th>
+              <td mat-cell *matCellDef="let plan">
+                {{getCostBreakdownTotalEligibleCosts(plan) | currency}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="projectStatus">
+              <th mat-header-cell *matHeaderCellDef>Project Status</th>
+              <td mat-cell *matCellDef="let plan">
+                {{getCIPStateText(plan.state)}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let plan">
+                <ng-container *ngIf="isReadyToReview(plan)">
+                  <a [routerLink]="getCipLink(plan)" routerLinkActive="active">
+                    <button mat-icon-button color="primary" matTooltip="View" aria-label="View">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </a>
+                  <button mat-icon-button color="primary" matTooltip="Approve" aria-label="Approve" (click)="approveCIP(plan)">
+                    <mat-icon>thumb_up_alt</mat-icon>
+                  </button>
+                  <button mat-icon-button color="primary" matTooltip="Reject" aria-label="Reject" (click)="rejectCIP(plan)">
+                    <mat-icon>thumb_down_alt</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="isDraft(plan)">
+                  <a [routerLink]="getCipLink(plan)" routerLinkActive="active">
+                    <button mat-icon-button color="primary" matTooltip="View" aria-label="View">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </a>
+                  <button *ngIf="canUndoApproveOrDeny(plan)" mat-icon-button color="primary" matTooltip="Reject" aria-label="Reject"
+                          (click)="undoCIPApproveOrDeny(plan)">
+                    <mat-icon>undo</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngIf="isWithdrawalRequested(plan)">
+                  <button mat-icon-button color="primary" matTooltip="Approve Withdrawal" aria-label="Approve Withdrawal"
+                          (click)="approveWithdrawal(plan)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="planColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: planColumns;"></tr>
+          </table>
+        </ng-container>
+        <table class="projects-list" *ngIf="getActivePlans().length === 0">
+          <tr class="projects-row">
+            <td class="no-projects-cell" colspan="5">No Plans Found</td>
+          </tr>
+        </table>
+      </mat-tab>
+      <mat-tab label="Completed Projects">
+        <ng-container *ngIf="getCompletedPlans().length > 0">
+          <table mat-table  class="projects-list" [dataSource]="getCompletedPlans()">
+            <ng-container matColumnDef="municipality">
+              <th mat-header-cell *matHeaderCellDef>Municipality</th>
+              <td mat-cell *matCellDef="let plan">
+                {{getMunicipalityName(plan.municipalCode)}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="projectName">
+              <th mat-header-cell *matHeaderCellDef>Project Name</th>
+              <td mat-cell *matCellDef="let plan">
+                {{plan.projectTitle}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef>Amount</th>
+              <td mat-cell *matCellDef="let plan">
+                {{getCostBreakdownTotalEligibleCosts(plan) | currency}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="projectStatus">
+              <th mat-header-cell *matHeaderCellDef>Project Status</th>
+              <td mat-cell *matCellDef="let plan">
+                {{getCIPStateText(plan.state)}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let plan">
+                <a [routerLink]="getCipLink(plan)" routerLinkActive="active">
+                  <button mat-icon-button color="primary" matTooltip="View" aria-label="View">
+                    <mat-icon>pageview</mat-icon>
+                  </button>
+                </a>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="planColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: planColumns;"></tr>
+          </table>
+        </ng-container>
+        <table class="projects-list" *ngIf="getCompletedPlans().length === 0">
+          <tr class="projects-row">
+            <td class="no-projects-cell" colspan="5">No Plans Found</td>
+          </tr>
+        </table>
+      </mat-tab>
+      <mat-tab label="Withdrawn Projects">
+        <ng-container *ngIf="getWithdrawnPlans().length > 0">
+          <table mat-table  class="projects-list" [dataSource]="getWithdrawnPlans()">
+            <ng-container matColumnDef="municipality">
+              <th mat-header-cell *matHeaderCellDef>Municipality</th>
+              <td mat-cell *matCellDef="let plan">
+                {{getMunicipalityName(plan.municipalCode)}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="projectName">
+              <th mat-header-cell *matHeaderCellDef>Project Name</th>
+              <td mat-cell *matCellDef="let plan">
+                {{plan.projectTitle}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef>Amount</th>
+              <td mat-cell *matCellDef="let plan">
+                {{getCostBreakdownTotalEligibleCosts(plan) | currency}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="projectStatus">
+              <th mat-header-cell *matHeaderCellDef>Project Status</th>
+              <td mat-cell *matCellDef="let plan">
+                {{getCIPStateText(plan.state)}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let plan">
+                <a [routerLink]="getCipLink(plan)" routerLinkActive="active">
+                  <button mat-icon-button color="primary" matTooltip="View" aria-label="View">
+                    <mat-icon>pageview</mat-icon>
+                  </button>
+                </a>
+                <button mat-icon-button color="primary" matTooltip="Undo Withdrawal" aria-label="Undo Withdrawal"
+                        (click)="undoWithdrawal(plan)">
+                  <mat-icon>undo</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="planColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: planColumns;"></tr>
+          </table>
+        </ng-container>
+        <table class="projects-list" *ngIf="getWithdrawnPlans().length === 0">
+          <tr class="projects-row">
+            <td class="no-projects-cell" colspan="5">No Plans Found</td>
+          </tr>
+        </table>
+      </mat-tab>
+      <mat-tab label="Rejected Projects">
+        <ng-container *ngIf="getRejectedPlans().length > 0">
+          <table mat-table  class="projects-list" [dataSource]="getRejectedPlans()">
+            <ng-container matColumnDef="municipality">
+              <th mat-header-cell *matHeaderCellDef>Municipality</th>
+              <td mat-cell *matCellDef="let plan">
+                {{getMunicipalityName(plan.municipalCode)}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="projectName">
+              <th mat-header-cell *matHeaderCellDef>Project Name</th>
+              <td mat-cell *matCellDef="let plan">
+                {{plan.projectTitle}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef>Amount</th>
+              <td mat-cell *matCellDef="let plan">
+                {{getCostBreakdownTotalEligibleCosts(plan) | currency}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="projectStatus">
+              <th mat-header-cell *matHeaderCellDef>Project Status</th>
+              <td mat-cell *matCellDef="let plan">
+                {{getCIPStateText(plan.state)}}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let plan">
+                <a [routerLink]="getCipLink(plan)" routerLinkActive="active">
+                  <button mat-icon-button color="primary" matTooltip="View" aria-label="View">
+                    <mat-icon>pageview</mat-icon>
+                  </button>
+                </a>
+                <button *ngIf="canUndoApproveOrDeny(plan)" mat-icon-button color="primary" matTooltip="Undo Rejection" aria-label="Undo Rejection"
+                        (click)="undoCIPApproveOrDeny(plan)">
+                  <mat-icon>undo</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="planColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: planColumns;"></tr>
+          </table>
+        </ng-container>
+        <table class="projects-list" *ngIf="getRejectedPlans().length === 0">
+          <tr class="projects-row">
+            <td class="no-projects-cell" colspan="5">No Plans Found</td>
+          </tr>
+        </table>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+
+<div class="page-section">
+  <h2 class="page-section-title">
+    {{getFiscalYearLabel(getCurrentFiscalYear())}} Annual Expenditure Report Reconciliation
+  </h2>
+  <div class="page-section-body">
+    <table mat-table  class="municipalities full-width" [dataSource]="annualExpenditureReports">
+      <ng-container matColumnDef="municipality">
+        <th mat-header-cell *matHeaderCellDef>Municipality</th>
+        <td mat-cell *matCellDef="let report">
+          <a [routerLink]="getAerLink(report.municipalCode, report.fiscalYear)" routerLinkActive="active">
+            {{getMunicipalityName(report.municipalCode)}}
+          </a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="amountAllocated">
+        <th class="align-right" mat-header-cell *matHeaderCellDef>Amount Allocated</th>
+        <td class="align-right" mat-cell *matCellDef="let report">
+          <a [routerLink]="getAerLink(report.municipalCode, report.fiscalYear)" routerLinkActive="active">
+            {{getAllocatedGasTax(report) | currency}}
+          </a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="interestEarned">
+        <th class="align-right" mat-header-cell *matHeaderCellDef>Interest Earned</th>
+        <td class="align-right" mat-cell *matCellDef="let report">
+          <a [routerLink]="getAerLink(report.municipalCode, report.fiscalYear)" routerLinkActive="active">
+            {{getInterestEarned(report) | currency}}
+          </a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="overUnderCommittedFunds">
+        <th class="align-right" mat-header-cell *matHeaderCellDef>Over/Under Committed Funds</th>
+        <td class="align-right" mat-cell *matCellDef="let report">
+          <a [routerLink]="getAerLink(report.municipalCode, report.fiscalYear)" routerLinkActive="active">
+            {{getUnallocatedGasTaxAmount(report) | currency}}
+          </a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="reportState">
+        <th class="align-centre" mat-header-cell *matHeaderCellDef>Report Status</th>
+        <td class="align-centre" mat-cell *matCellDef="let report">
+          <a [routerLink]="getAerLink(report.municipalCode, report.fiscalYear)" routerLinkActive="active">
+            {{getAERStateText(report.reportState)}}
+          </a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="lastActionTaken">
+        <th class="align-centre" mat-header-cell *matHeaderCellDef>Last Action Taken</th>
+        <td class="align-centre" mat-cell *matCellDef="let report">
+          <a [routerLink]="getAerLink(report.municipalCode, report.fiscalYear)" routerLinkActive="active">
+            {{getLastActionTakenProperty(report, 'actionType')?.label}}
+          </a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="dateOfAction">
+        <th class="align-centre" mat-header-cell *matHeaderCellDef>Date of Action</th>
+        <td class="align-centre" mat-cell *matCellDef="let report">
+          <a [routerLink]="getAerLink(report.municipalCode, report.fiscalYear)" routerLinkActive="active">
+            {{getLastActionTakenProperty(report, 'date') | date}}
+          </a>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="description">
+        <th class="align-left" mat-header-cell *matHeaderCellDef>Description</th>
+        <td class="align-left" mat-cell *matCellDef="let report">
+          <a [routerLink]="getAerLink(report.municipalCode, report.fiscalYear)" routerLinkActive="active">
+            {{getLastActionTakenProperty(report, 'description')}}
+          </a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="annualExpenditureReportColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: annualExpenditureReportColumns;"></tr>
+    </table>
+  </div>
+</div>
+
+<div class="page-section print-page-break">
+  <h2 class="page-section-title">
+    Municipal Gas Tax Allocation Amounts
+  </h2>
+  <div class="page-section-body">
+    <table mat-table  class="municipalities full-width" [dataSource]="municipalAllocationsList">
+      <ng-container matColumnDef="municipality">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let allocation">
+          <a [routerLink]="getReportsLink(allocation.municipalCode)" routerLinkActive="active">
+            {{allocation.municipalLabel}}
+          </a>
+        </td>
+      </ng-container>
+      <ng-container *ngFor="let column of allocationTableColumns; index as i">
+        <ng-container *ngIf="i > 0" [matColumnDef]="column">
+          <th class="align-right" mat-header-cell *matHeaderCellDef> {{this.getFiscalYearLabel(column)}}</th>
+          <td class="align-right" mat-cell *matCellDef="let allocation">
+            <a [routerLink]="getReportsLink(allocation.municipalCode)" routerLinkActive="active">
+              {{allocation[column] | currency}}
+            </a>
+          </td>
+        </ng-container>
+      </ng-container>
+      <ng-container matColumnDef="spacer">
+        <th mat-header-cell *matHeaderCellDef>Municipality</th>
+      </ng-container>
+      <ng-container matColumnDef="amountAllocated">
+        <th class="align-centre" mat-header-cell *matHeaderCellDef colspan="7">Amount Allocated</th>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['spacer', 'amountAllocated']"></tr>
+      <tr mat-header-row *matHeaderRowDef="allocationTableColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: allocationTableColumns;"></tr>
+    </table>
+  </div>
+</div>

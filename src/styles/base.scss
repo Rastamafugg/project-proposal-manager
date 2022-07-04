@@ -1,0 +1,397 @@
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+
+$primary-colour: #23353f; // primary green
+$primary-accent-colour: #1fa35d; // light green
+$secondary-colour: #57585a; // secondary grey
+$secondary-accent-colour: #a03021; // secondary red
+
+$primary-theme: (
+  50: lighten($primary-colour, 90),
+  100: lighten($primary-colour, 60),
+  200: lighten($primary-colour, 50),
+  300: lighten($primary-colour, 40),
+  400: lighten($primary-colour, 30),
+  500: lighten($primary-colour, 20),
+  600: lighten($primary-colour, 10),
+  700: $primary-colour,
+  800: darken($primary-colour, 30),
+  900: darken($primary-colour, 60),
+  A100: lighten($primary-accent-colour, 50),
+  A200: lighten($primary-accent-colour, 25),
+  A400: $primary-accent-colour,
+  A700: darken($primary-accent-colour, 25),
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $dark-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  )
+);
+
+$secondary-theme: (
+  50: lighten($secondary-colour, 90),
+  100: lighten($secondary-colour, 60),
+  200: lighten($secondary-colour, 50),
+  300: lighten($secondary-colour, 40),
+  400: lighten($secondary-colour, 30),
+  500: lighten($secondary-colour, 20),
+  600: lighten($secondary-colour, 10),
+  700: $secondary-colour,
+  800: darken($secondary-colour, 30),
+  900: darken($secondary-colour, 60),
+  A100: lighten($secondary-accent-colour, 50),
+  A200: lighten($secondary-accent-colour, 25),
+  A400: $secondary-accent-colour,
+  A700: darken($secondary-accent-colour, 25),
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $dark-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  )
+);
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$project-proposal-manager-app-primary: mat-palette($primary-theme, 700, 200, 900);
+$project-proposal-manager-app-secondary: mat-palette($secondary-theme, 700, 200, 900);
+
+// The warn palette is optional (defaults to red).
+$project-proposal-manager-app-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$project-proposal-manager-app-theme: mat-light-theme($project-proposal-manager-app-primary, $project-proposal-manager-app-secondary, $project-proposal-manager-app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($project-proposal-manager-app-theme);
+
+// Mixins
+
+@mixin primary-font {
+  font-family: 'Myriad Pro', 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+@mixin expandable-form {
+  opacity: 100;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  border-bottom: 1px solid $primary-accent-colour;
+
+  &.hidden {
+    max-height: 0;
+    opacity: 0;
+    overflow:hidden;
+  }
+
+  .expandable-form-button {
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+  }
+}
+
+// Media queries
+
+@media print {
+  .print-page-break {
+    page-break-before: always;
+  }
+
+  .page-title {
+    .page-title-buttons {
+      .page-title-button {
+        display: none;
+      }
+    }
+  }
+
+  .page-section {
+    .page-section-title {
+      .page-section-title-button {
+        display: none;
+      }
+    }
+  }
+
+  .page-footer-buttons {
+    .page-footer-button {
+      display: none;
+    }
+  }
+}
+
+/* Fix for checkbox with long label issue */
+::ng-deep .mat-checkbox-layout {
+  white-space: normal !important;
+}
+
+/* HTML tag styling */
+html, body {
+  height: 100%;
+}
+
+body {
+  @include primary-font;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+  color: black;
+}
+
+/* core class styling */
+.app-title {
+  @include primary-font;
+  font-size: 2rem;
+}
+
+.page-title {
+  display: grid;
+  grid-template-columns: 85% 15%;
+
+  .page-title-text {
+    @include primary-font;
+    font-size: 2rem;
+    margin: .5rem 0;
+  }
+
+  .page-title-buttons {
+    display: flex;
+    justify-content: flex-end;
+
+    .page-title-button {
+      margin: 0 .25rem;
+    }
+  }
+}
+
+.page-footer-buttons {
+  display: flex;
+  justify-content: flex-start;
+
+  .page-footer-button {
+    margin: 0 .25rem;
+  }
+}
+
+.section {
+  padding: 1rem;
+}
+
+.section-title {
+  @include primary-font;
+  font-size: 1.5rem;
+}
+
+.sub-section-title {
+  @include primary-font;
+}
+
+.sub-section-note {
+  margin: 0;
+}
+
+.page-link {
+  @include primary-font;
+  font-size: 1rem;
+}
+
+.full-width,
+.half-width {
+  padding: 0 1rem;
+  //display: block;
+}
+
+.submit-button {
+  margin-top: 1rem;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-centre {
+  text-align: center;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.grid-field {
+  width: 100%;
+  padding-left: 1rem;
+}
+
+.page-section {
+  border: $primary-accent-colour 1px solid;
+  border-radius: 1rem;
+  box-shadow: .35rem .35rem .75rem rgba(0, 0, 0, .5);
+  margin: 1rem 0;
+  overflow: hidden;
+
+  .page-section-title {
+    @include primary-font;
+    background-color: $primary-accent-colour;
+    color: white;
+    padding: .5rem;
+    margin: 0;
+
+    .page-section-title-button {
+      color: white;
+    }
+  }
+
+  .page-section-sub-title {
+    @include primary-font;
+    font-size: 1.5rem;
+    padding: .5rem .5rem 0;
+    margin: .5rem 0;
+  }
+
+  .page-section-note {
+    @include primary-font;
+    font-size: 1rem;
+    padding: 0 .5rem;
+    margin: .5rem 0;
+  }
+
+  .page-section-body {
+    padding-top: .5rem;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto;
+
+    .full-width {
+      grid-column-start: span 2;
+    }
+
+    .half-width {
+    }
+
+    .mat-table {
+      border-radius: 1rem;
+    }
+  }
+}
+
+.actions-cell {
+  width: 7.5rem;
+}
+
+.expandable-cell {
+  max-width: 100%;
+}
+
+.editable-row:hover {
+  color: $primary-accent-colour;
+}
+
+.municipal-projects, .municipal-annual-expenditure-reports {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 3.5rem auto;
+
+  h2 {
+    color: $primary-accent-colour;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  h2, h3, p, .checklist-item, .projects {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+
+  .full-width {
+    padding: 0 1rem;
+    grid-column-start: span 2;
+  }
+
+  .half-width {
+    padding: 0 1rem;
+  }
+
+  .financing {
+    grid-column-start: 1;
+    grid-column-end: 3;
+
+    .financing-cell {
+      text-align: right;
+    }
+
+    .financing-cell-center {
+      text-align: center;
+    }
+
+    .financing-cell:first-child,
+    .financing-row-cell {
+      text-align: left;
+    }
+
+    .financing-cell.action-cell {
+      width: 5rem;
+      text-align: center;
+
+      button {
+        height: 2rem;
+        width: 2rem;
+      }
+    }
+
+    .financing-cell-select {
+      width: 100%;
+    }
+  }
+
+  .projects-cell {
+    text-align: right;
+  }
+
+  .projects-cell:first-child {
+    text-align: left;
+  }
+
+  .no-projects-cell {
+    padding: 1rem;
+    text-align: center;
+  }
+}

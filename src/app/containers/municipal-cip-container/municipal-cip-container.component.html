@@ -1,0 +1,43 @@
+<div class="loading" *ngIf="!actionType">Loading...</div>
+
+<app-capital-investment-plan-edit *ngIf="isActionType(CIPAction.EDIT) || isActionType(CIPAction.AMEND)"
+  [cip]="targetCIP$ | async"
+  [municipalContactInfo]="municipalContactInfo$ | async"
+  [allMunicipalCips]="allMunicipalCips$ | async"
+  [isProvincialInterface]="false"
+  [projectTypes]="projectTypes$ | async"
+  [activityTypes]="activityTypes$ | async"
+  [outcomesAndPlanningTypes]="outcomesAndPlanningTypes$ | async"
+  [fundingSourceTypes]="fundingSourceTypes$ | async"
+  [programRequirementsTypes]="programRequirementsTypes$ | async"
+  [projectTimelineActivityTypes]="projectTimelineActivityTypes$ | async"
+  [categories]="categories$ | async"
+  (hasUnsavedData)="setCanLeavePage($event)"
+  (updatedCip)="saveCip($event)"
+></app-capital-investment-plan-edit>
+
+<app-capital-investment-plan-view *ngIf="isActionType(CIPAction.VIEW)"
+  [cip]="targetCIP$ | async"
+  [municipalContactInfo]="municipalContactInfo$ | async"
+  [projectTypes]="projectTypes$ | async"
+  [activityTypes]="activityTypes$ | async"
+  [outcomesAndPlanningTypes]="outcomesAndPlanningTypes$ | async"
+  [fundingSourceTypes]="fundingSourceTypes$ | async"
+  [programRequirementsTypes]="programRequirementsTypes$ | async"
+  [projectTimelineActivityTypes]="projectTimelineActivityTypes$ | async"
+  [categories]="categories$ | async"
+></app-capital-investment-plan-view>
+
+<app-capital-investment-plan-edit *ngIf="isActionType(CIPAction.NEW)"
+  [municipalContactInfo]="municipalContactInfo$ | async"
+  [isProvincialInterface]="false"
+  [projectTypes]="projectTypes$ | async"
+  [activityTypes]="activityTypes$ | async"
+  [outcomesAndPlanningTypes]="outcomesAndPlanningTypes$ | async"
+  [fundingSourceTypes]="fundingSourceTypes$ | async"
+  [programRequirementsTypes]="programRequirementsTypes$ | async"
+  [projectTimelineActivityTypes]="projectTimelineActivityTypes$ | async"
+  [categories]="categories$ | async"
+  (hasUnsavedData)="setCanLeavePage($event)"
+  (updatedCip)="saveCip($event)"
+></app-capital-investment-plan-edit>

@@ -1,0 +1,32 @@
+@import "../../../../styles/base";
+@import "../../../../styles/readonly-fields";
+
+.financing-row-cell {
+  background-color: #DDDDDD;
+  text-align: left;
+}
+
+.cost-breakdown-form {
+  @include expandable-form;
+  max-height: 16rem;
+}
+
+.timeline-item-form {
+  @include expandable-form;
+  max-height: 16rem;
+}
+
+.timeline-transfer-form {
+  @include expandable-form;
+  max-height: 16rem;
+}
+
+.source-of-funding-form {
+  @include expandable-form;
+  max-height: 16rem;
+}
+
+.project-timeline-entry-form {
+  @include expandable-form;
+  max-height: 16rem;
+}

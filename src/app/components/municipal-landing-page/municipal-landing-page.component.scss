@@ -1,0 +1,19 @@
+@import "../../../styles/base";
+
+.page-section .contact-info {
+  @include primary-font;
+  padding: 1rem;
+
+  .right-aligned-button {
+    float: right;
+  }
+
+  .info-field {
+    padding-bottom: .5rem;
+  }
+}
+
+.page-section .page-section-title .projects-section-title {
+  display: flex;
+  align-items: center;
+}

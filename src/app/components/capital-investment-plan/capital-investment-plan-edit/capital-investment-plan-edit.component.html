@@ -1,0 +1,558 @@
+<div class="page-title">
+  <h2 class="page-title-text">Capital Investment Plan</h2>
+  <div class="page-title-buttons">
+    <button [disabled]="form.invalid" class="page-title-button" mat-raised-button matTooltip="Save Plan" color="primary" aria-label="Save Plan" (click)="submitForm()">
+      <mat-icon>save</mat-icon>
+    </button>
+    <button class="page-title-button" mat-raised-button matTooltip="Print Screen" color="primary" aria-label="Print Screen" (click)="printPage()">
+      <mat-icon>print</mat-icon>
+    </button>
+    <button class="page-title-button" mat-raised-button matTooltip="Back" color="primary" aria-label="Back" (click)="goToPreviousPage()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div class="page-section" *ngIf="isProvincialInterface">
+  <div class="page-section-body">
+    <div class="readonly-field full-width">
+      <div class="label">Municipality</div>
+      <div class="value">{{getMunicipalityName()}}</div>
+    </div>
+  </div>
+</div>
+
+<form [formGroup]="form">
+  <div class="page-section">
+    <h2 class="page-section-title">Project Overview</h2>
+
+    <div class="page-section-body">
+      <mat-form-field [class]="getProjectTitleClasses()">
+        <input matInput placeholder="Project Title" type="text" formControlName="projectTitle">
+        <mat-error *ngIf="form.get('projectTitle').errors?.required">Project Title is required</mat-error>
+      </mat-form-field>
+
+      <div class="readonly-field half-width" *ngIf="hasProjectNumber()">
+        <div class="label">Project Number</div>
+        <div class="value">{{cip.projectNumber}}</div>
+      </div>
+
+      <mat-form-field class="full-width">
+        <mat-label>Project Categories</mat-label>
+        <mat-select formControlName="projectCategories" (selectionChange)="categoriesSelected($event.value)" multiple>
+          <mat-option *ngFor="let category of categories" [value]="category.code">
+            {{category.text}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('projectCategories').errors?.required">At least one Project Category is required</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="page-section">
+    <h2 class="page-section-title">Project Information</h2>
+
+    <div class="page-section-body">
+      <mat-form-field class="full-width">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"
+                  placeholder="Brief Project Description"
+                  formControlName="projectDescription"></textarea>
+        <mat-error *ngIf="form.get('projectDescription').errors?.required">Project Description is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <textarea matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"
+                  placeholder="Project Location(s) (Street Address and/or PID)"
+                  formControlName="projectLocation"></textarea>
+        <mat-error *ngIf="form.get('projectLocation').errors?.required">Project Location is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Municipality" type="text" formControlName="projectMunicipality">
+        <mat-error *ngIf="form.get('projectMunicipality').errors?.required">Project Municipality is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Postal Code" type="text" formControlName="projectPostalCode">
+        <mat-error *ngIf="form.get('projectPostalCode').errors?.required">Postal Code is required</mat-error>
+      </mat-form-field>
+      <mat-checkbox color="primary" class="half-width" formControlName="councilResolutionMailed"> Signed & Sealed Council Resolution Mailed?</mat-checkbox>
+      <mat-form-field class="half-width">
+        <mat-label>Date of Resolution</mat-label>
+        <input matInput [matDatepicker]="dateOfResolutionPicker" formControlName="dateOfResolution">
+        <mat-datepicker-toggle matSuffix [for]="dateOfResolutionPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dateOfResolutionPicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <mat-label>Is this a renewal, expansion, or a new installation?</mat-label>
+        <mat-select formControlName="projectType">
+          <mat-option *ngFor="let projectType of projectTypes" [value]="projectType.code">
+            {{projectType.label}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('projectType').errors?.required">Project Type is required</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="page-section print-page-break">
+    <h2 class="page-section-title">Estimated Eligible Costs
+      <button class="page-section-title-button" mat-icon-button aria-label="Add" (click)="newProjectActivity()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </h2>
+    <p class="page-section-note">Do not include taxes, they will calculate automatically.</p>
+
+    <div class="page-section-body">
+      <h3 class="page-section-sub-title">Cost Breakdown</h3>
+      <form [class]="getProjectActivityFormClasses()" [formGroup]="projectActivityForm">
+        <mat-form-field class="half-width">
+          <mat-select formControlName="activityType" placeholder="Category">
+            <mat-option *ngFor="let activityType of activityTypes" [value]="activityType.code">
+              {{activityType.label}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="projectActivityForm.get('activityType').errors?.required">Category is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="half-width">
+          <input matInput type="number" formControlName="amount" placeholder="Amount">
+          <mat-error *ngIf="projectActivityForm.get('amount').errors?.required">Amount is required</mat-error>
+          <mat-error *ngIf="projectActivityForm.get('amount').errors?.min">Amount cannot be a negative number</mat-error>
+        </mat-form-field>
+        <div class="half-width">
+          <button [disabled]="projectActivityForm.invalid" mat-raised-button matTooltip="Save Cost Breakdown" aria-label="Save Cost Breakdown" color="primary" class="expandable-form-button" (click)="saveProjectActivity()">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-raised-button matTooltip="Cancel" aria-label="Cancel" color="primary" class="expandable-form-button" (click)="cancelProjectActivity()">
+            <mat-icon>cancel</mat-icon>
+          </button>
+       </div>
+      </form>
+      <table #costBreakdown mat-table class="financing full-width" [dataSource]="projectActivitiesControls.controls">
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>
+            <strong>Category</strong>
+          </th>
+          <td (click)="editProjectActivity(activity.value)" mat-cell *matCellDef="let activity; let i=index" class="editable-row">
+            {{getActivityTypeLabel(activity.value.activityType)}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef class="expandable-cell align-right"><strong>Amount</strong></th>
+          <td mat-cell *matCellDef="let activity; let i=index" class="expandable-cell editable-row align-right" (click)="editProjectActivity(activity.value)">
+            {{activity.value.amount | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actions-cell align-centre"><strong>Actions</strong></th>
+          <td mat-cell *matCellDef="let activity; let i=index" class="actions-cell align-centre">
+            <button color="primary" matTooltip="Delete" mat-icon-button aria-label="Delete" (click)="deleteProjectActivity(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="subtotal">
+          <td mat-footer-cell *matFooterCellDef>
+            <strong>Subtotal</strong>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="subtotalAmount">
+          <td mat-footer-cell *matFooterCellDef class="align-right">
+            {{getCostBreakdownSubtotal() | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="totalHST">
+          <td mat-footer-cell *matFooterCellDef>
+            <strong>Total HST</strong>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="totalHSTAmount">
+          <td mat-footer-cell *matFooterCellDef class="align-right">
+            {{getCostBreakdownTotalHST() | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="minusHSTRebate">
+          <td mat-footer-cell *matFooterCellDef>
+            <strong>Minus HST Rebate</strong>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="minusHSTRebateAmount">
+          <td mat-footer-cell *matFooterCellDef class="align-right">
+            {{getCostBreakdownMinusHSTRebate() | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="totalEligibleCosts">
+          <td mat-footer-cell *matFooterCellDef>
+            <strong>Total Eligible Costs</strong>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="totalEligibleCostsAmount">
+          <td mat-footer-cell *matFooterCellDef class="align-right">
+            {{getCostBreakdownTotalEligibleCosts() | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="spacer">
+          <td mat-footer-cell *matFooterCellDef class="actions-cell align-centre"></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="activityTableColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: activityTableColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="['subtotal', 'subtotalAmount', 'spacer']"></tr>
+        <tr mat-footer-row *matFooterRowDef="['totalHST', 'totalHSTAmount', 'spacer']"></tr>
+        <tr mat-footer-row *matFooterRowDef="['minusHSTRebate', 'minusHSTRebateAmount', 'spacer']"></tr>
+        <tr mat-footer-row *matFooterRowDef="['totalEligibleCosts', 'totalEligibleCostsAmount', 'spacer']"></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="page-section print-page-break">
+    <h2 class="page-section-title">Gas Tax Expenditure Timeline
+      <button class="page-section-title-button" mat-icon-button aria-label="Add" (click)="newTimelineItem()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </h2>
+
+    <div class="page-section-body">
+      <form [class]="getTimelineItemFormClasses()" [formGroup]="timelineItemForm">
+        <mat-form-field class="half-width">
+          <mat-select formControlName="year" placeholder="Fiscal Year">
+            <mat-option *ngFor="let year of fiscalYears" [value]="year.code">
+              {{year.label}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="timelineItemForm.get('year').errors?.required">Fiscal Year is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="half-width">
+          <input matInput type="number" formControlName="plannedAmount" placeholder="Amount">
+          <mat-error *ngIf="timelineItemForm.get('plannedAmount').errors?.required">Amount is required</mat-error>
+          <mat-error *ngIf="timelineItemForm.get('plannedAmount').errors?.min">Amount cannot be a negative number</mat-error>
+        </mat-form-field>
+        <div class="half-width">
+          <button [disabled]="timelineItemForm.invalid" mat-raised-button matTooltip="Save Timeline Item" aria-label="Save Timeline Item" color="primary" class="expandable-form-button" (click)="saveTimelineItem()">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-raised-button matTooltip="Cancel" aria-label="Cancel" color="primary" class="expandable-form-button" (click)="cancelTimelineItem()">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+      </form>
+      <form [class]="getTimelineTransferFormClasses()" [formGroup]="timelineTransferForm">
+        <mat-form-field class="half-width">
+          <mat-select formControlName="cip" placeholder="Capital Investment Plan">
+            <mat-option *ngFor="let cip of getEligibleCips()" [value]="cip">
+              {{cip.projectTitle}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="timelineTransferForm.get('cip').errors?.required">Capital Investment Plan is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="half-width">
+          <input matInput type="number" formControlName="plannedAmount" placeholder="Amount">
+          <mat-error *ngIf="timelineTransferForm.get('plannedAmount').errors?.required">Amount is required</mat-error>
+          <mat-error *ngIf="timelineTransferForm.get('plannedAmount').errors?.min">Amount cannot be a negative number</mat-error>
+        </mat-form-field>
+        <div class="half-width">
+          <button [disabled]="timelineTransferForm.invalid" mat-raised-button matTooltip="Transfer Funds" aria-label="Transfer Funds" color="primary" class="expandable-form-button" (click)="performTimelineTransfer()">
+            <mat-icon>next_plan</mat-icon>
+          </button>
+          <button mat-raised-button matTooltip="Cancel" aria-label="Cancel" color="primary" class="expandable-form-button" (click)="cancelTimelineTransfer()">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+      </form>
+      <table #expenditureTimeline mat-table class="financing full-width" [dataSource]="gasTaxExpenditureTimelineControls.controls">
+        <ng-container matColumnDef="year">
+          <th mat-header-cell *matHeaderCellDef><strong>Fiscal Year</strong></th>
+          <td (click)="editTimelineItem(timelineItem.value)" mat-cell *matCellDef="let timelineItem; let i=index" class="editable-row">
+            {{getFiscalYearLabel(timelineItem.value.year)}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="plannedAmount">
+          <th mat-header-cell *matHeaderCellDef class="expandable-cell align-right"><strong>Planned Amount</strong></th>
+          <td mat-cell *matCellDef="let timelineItem; let i=index" class="expandable-cell editable-row align-right" (click)="editTimelineItem(timelineItem.value)">
+            {{timelineItem.value.plannedAmount | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actualAmount">
+          <th mat-header-cell *matHeaderCellDef class="expandable-cell align-right"><strong>Actual Amount</strong></th>
+          <td mat-cell *matCellDef="let timelineItem; let i=index" class="expandable-cell editable-row align-right" (click)="editTimelineItem(timelineItem.value)">
+            {{timelineItem.value.actualAmount | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actions-cell align-centre"><strong>Actions</strong></th>
+          <td mat-cell *matCellDef="let timelineItem; let i=index" class="actions-cell align-centre">
+            <button *ngIf="isYearEditable(timelineItem.value)" color="primary" matTooltip="Transfer Funds" mat-icon-button aria-label="Transfer Funds" (click)="createTimelineTransfer(timelineItem.value)">
+              <mat-icon>next_plan</mat-icon>
+            </button>
+            <button *ngIf="isYearEditable(timelineItem.value)" color="primary" matTooltip="Delete" mat-icon-button aria-label="Delete" (click)="deleteTimelineItem(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="total">
+          <td mat-footer-cell *matFooterCellDef>
+            <strong>Total</strong>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="totalPlannedAmount">
+          <td mat-footer-cell *matFooterCellDef class="align-right">
+            {{gasTaxExpenditureTimelinePlannedTotal() | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="totalActualAmount">
+          <td mat-footer-cell *matFooterCellDef class="align-right">
+            {{gasTaxExpenditureTimelineActualTotal() | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="spacer">
+          <td mat-footer-cell *matFooterCellDef class="actions-cell align-centre"></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="expenditureTimelineColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: expenditureTimelineColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="['total', 'totalPlannedAmount', 'totalActualAmount', 'spacer']"></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="page-section">
+    <h2 class="page-section-title">Proposed Sources of Funding
+      <button class="page-section-title-button" (click)="newSourceOfFunding()" mat-icon-button aria-label="Add">
+        <mat-icon>add</mat-icon>
+      </button>
+    </h2>
+    <p class="page-section-note">Projects involving funding from other sources require confirmation that the funding has been approved, or is under consideration. Provide at the time of submission of CIP.</p>
+
+    <div class="page-section-body">
+      <form [class]="getSourceOfFundingFormClasses()" [formGroup]="sourceOfFundingForm">
+        <mat-form-field class="financing-cell-select half-width">
+          <mat-select formControlName="fundingSource" placeholder="Project Funding Source">
+            <mat-option *ngFor="let fundingSourceType of fundingSourceTypes" (blur)="setSelectedPath([])" [value]="fundingSourceType.code">
+              {{fundingSourceType.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="half-width">
+          <input matInput type="text" formControlName="program" placeholder="Program">
+        </mat-form-field>
+        <mat-checkbox class="half-width" formControlName="confirmed"> Confirmed</mat-checkbox>
+        <mat-form-field class="half-width">
+          <input matInput type="number" formControlName="amount" placeholder="Amount">
+        </mat-form-field>
+        <div class="half-width">
+          <button mat-raised-button matTooltip="Save Funding Source" aria-label="Save Funding Source" color="primary" class="expandable-form-button" (click)="saveSourceOfFunding()">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-raised-button matTooltip="Cancel" aria-label="Cancel" color="primary" class="expandable-form-button" (click)="cancelSourceOfFunding()">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+      </form>
+      <table #sourcesOfFunding mat-table class="financing full-width" [dataSource]="proposedSourcesOfFundingControls.controls">
+        <ng-container matColumnDef="fundingSource">
+          <th mat-header-cell *matHeaderCellDef>
+            <strong>Project Funding Source</strong>
+          </th>
+          <td (click)="editSourceOfFunding(source.value)" mat-cell *matCellDef="let source; let i = index" class="editable-row">
+            {{getFundingSourceLabel(source.value.fundingSource)}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="program">
+          <th mat-header-cell *matHeaderCellDef><strong>Program</strong></th>
+          <td (click)="editSourceOfFunding(source.value)" mat-cell *matCellDef="let source; let i = index" class="editable-row">
+            {{source.value.program}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="confirmed">
+          <th mat-header-cell *matHeaderCellDef class="align-centre"><strong>Confirmed?</strong></th>
+          <td (click)="editSourceOfFunding(source.value)" mat-cell *matCellDef="let source; let i = index" class="editable-row align-centre">
+            <mat-icon *ngIf="source.value.confirmed" color="primary" aria-hidden="true">check_box</mat-icon>
+            <mat-icon *ngIf="!source.value.confirmed" color="primary" aria-hidden="false">check_box_outline_blank</mat-icon>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef class="align-right"><strong>Amount</strong></th>
+          <td (click)="editSourceOfFunding(source.value)" mat-cell *matCellDef="let source; let i = index" class="editable-row align-right">
+            {{source.value.amount | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actions-cell align-centre"><strong>Actions</strong></th>
+          <td mat-cell *matCellDef="let source; let i = index" class="actions-cell align-centre">
+            <button color="primary" matTooltip="Delete" mat-icon-button aria-label="Delete" (click)="deleteSourceOfFunding(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="fundingSourcesColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: fundingSourcesColumns;"></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="page-section print-page-break">
+    <h2 class="page-section-title">Project Timelines
+      <button class="page-section-title-button" (click)="newProjectTimelineEntry()" mat-icon-button aria-label="Add">
+        <mat-icon>add</mat-icon>
+      </button>
+    </h2>
+
+    <div class="page-section-body">
+      <form [class]="getProjectTimelineEntryFormClasses()" [formGroup]="projectTimelineEntryForm">
+        <mat-form-field class="financing-cell-select half-width">
+          <mat-select formControlName="activity" placeholder="Activity">
+            <mat-option *ngFor="let timelineActivityType of projectTimelineActivityTypes" [value]="timelineActivityType.code">
+              {{timelineActivityType.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="half-width"></div>
+        <mat-form-field class="half-width">
+          <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" placeholder="Start Date">
+          <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #startDatePicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="half-width">
+          <input matInput [matDatepicker]="completionDatePicker" formControlName="completionDate" placeholder="Completion Date">
+          <mat-datepicker-toggle matSuffix [for]="completionDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #completionDatePicker></mat-datepicker>
+        </mat-form-field>
+        <div class="half-width">
+          <button mat-raised-button matTooltip="Save Project Timeline Entry" aria-label="Save Project Timeline Entry" color="primary" class="expandable-form-button" (click)="saveProjectTimelineEntry()">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-raised-button matTooltip="Cancel" aria-label="Cancel" color="primary" class="expandable-form-button" (click)="cancelProjectTimelineEntry()">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+      </form>
+      <table #projectTimelines mat-table class="financing full-width" [dataSource]="projectTimelinesControls.controls">
+        <ng-container matColumnDef="activity">
+          <th mat-header-cell *matHeaderCellDef>
+            <strong>Activity</strong>
+          </th>
+          <td (click)="editProjectTimelineEntry(timelineEntry.value)" mat-cell *matCellDef="let timelineEntry; let i = index" class="editable-row">
+            {{getProjectTimelineLabel(timelineEntry.value.activity)}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="startDate">
+          <th mat-header-cell *matHeaderCellDef class="align-right"><strong>Start Date</strong></th>
+          <td (click)="editProjectTimelineEntry(timelineEntry.value)" mat-cell *matCellDef="let timelineEntry; let i = index" class="editable-row align-right">
+            {{timelineEntry.value.startDate | date:'mediumDate'}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="completionDate">
+          <th mat-header-cell *matHeaderCellDef class="align-right"><strong>Completion Date</strong></th>
+          <td (click)="editProjectTimelineEntry(timelineEntry.value)" mat-cell *matCellDef="let timelineEntry; let i = index" class="editable-row align-right">
+            {{timelineEntry.value.completionDate | date:'mediumDate'}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actions-cell align-centre"><strong>Actions</strong></th>
+          <td mat-cell *matCellDef="let timelineEntry; let i = index" class="actions-cell align-centre">
+            <button color="primary" matTooltip="Delete" mat-icon-button aria-label="Delete" (click)="deleteProjectTimelineEntry(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="projectTimelinesColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: projectTimelinesColumns"></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="page-section print-page-break">
+    <h2 class="page-section-title">Outcomes & Planning</h2>
+    <p class="page-section-note">Indicate your municipality's progress with improving local planning and asset management</p>
+
+    <div class="page-section-body">
+      <mat-list class="full-width" formArrayName="outcomesAndPlanning">
+        <mat-list-item *ngFor="let currentControl of outcomesAndPlanningControls.controls; let i=index">
+          <ng-container [formGroupName]="i">
+            <mat-checkbox formControlName="selected"> {{getOutcomesAndPlanningLabel(currentControl.value.code)}}</mat-checkbox>
+          </ng-container>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+    <!--    <mat-form-field class="checklist-item">-->
+    <!--      <input matInput placeholder="Other" type="text" formControlName="otherOutcomes">-->
+    <!--    </mat-form-field>-->
+  <div class="page-section print-page-break">
+    <h2 class="page-section-title">Schedule H Indicators and Outcomes</h2>
+    <p class="page-section-note">Please select all applicable outcomes below. You do not need to provide the actual data until the project is completed.</p>
+
+    <div class="page-section-body">
+      <ng-container formArrayName="scheduleHIndicators">
+        <ng-container *ngFor="let currentIndicatorControl of indicatorControls.controls; let i=index" [formGroupName]="i">
+          <h3 class="page-section-sub-title">{{getScheduleHIndicatorLabel(currentIndicatorControl.value.projectCategoryCode)}}</h3>
+          <mat-list class="full-width">
+            <mat-list-item *ngFor="let currentOutcomeControl of getIndicatorOutcomeControls(i).controls; let x=index" formArrayName="outcomes">
+              <ng-container [formGroupName]="x">
+                <mat-checkbox formControlName="selected"> {{getScheduleHIndicatorOutcomeLabel(currentOutcomeControl.value.code)}}</mat-checkbox>
+              </ng-container>
+            </mat-list-item>
+          </mat-list>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <!--  <div class="page-section">-->
+  <!--    <h2 class="page-section-title">Base Amount</h2>-->
+  <!--    <p>Please provide your municipal expenditures for the categories listed below. For projects which were cost-shared through funding programs, only include the municipal share of the project costs. If you already completed this section on another application please leave blank.</p>-->
+  <!--    <h3>GAS TAX - BASE AMOUNT</h3>-->
+  <!--    <table class="financing">-->
+  <!--      <tr class="financing-header-row">-->
+  <!--        <th class="financing-cell">Categories</th>-->
+  <!--        <th class="financing-cell" colspan="4">Capital Expended Amounts</th>-->
+  <!--      </tr>-->
+  <!--      <tr class="financing-header-row">-->
+  <!--        <th class="financing-cell"></th>-->
+  <!--        <th class="financing-cell">2015/16</th>-->
+  <!--        <th class="financing-cell">2016/17</th>-->
+  <!--        <th class="financing-cell">2017/18</th>-->
+  <!--        <th class="financing-cell">2018/19</th>-->
+  <!--      </tr>-->
+  <!--&lt;!&ndash;Short-Line Rail&ndash;&gt;-->
+  <!--      <tr class="financing-header-row">-->
+  <!--        <th class="financing-row-cell" colspan="5">Disaster Mitigation</th>-->
+  <!--      </tr>-->
+  <!--      <tr class="financing-row">-->
+  <!--        <td class="financing-cell">Seawall</td>-->
+  <!--        <td class="financing-cell">$0.00</td>-->
+  <!--        <td class="financing-cell">$0.00</td>-->
+  <!--        <td class="financing-cell">$550,000.00</td>-->
+  <!--        <td class="financing-cell">$400,000.00</td>-->
+  <!--      </tr>-->
+  <!--    </table>-->
+  <!--  </div>-->
+
+  <div class="page-section print-page-break">
+    <h2 class="page-section-title">Program Requirements</h2>
+    <p class="page-section-note">The following are requirements of the program:</p>
+
+    <div class="page-section-body">
+      <mat-list class="full-width" formArrayName="programRequirements">
+        <mat-list-item *ngFor="let currentControl of requirementsControls.controls; let i=index">
+          <ng-container [formGroupName]="i">
+            <mat-checkbox formControlName="selected"> {{getRequirementLabel(currentControl.value.code)}}</mat-checkbox>
+          </ng-container>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+
+  <div class="page-footer-buttons">
+    <button [disabled]="form.invalid" class="page-footer-button" mat-raised-button matTooltip="Save Plan" color="primary" aria-label="Save Plan" (click)="submitForm()">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+</form>

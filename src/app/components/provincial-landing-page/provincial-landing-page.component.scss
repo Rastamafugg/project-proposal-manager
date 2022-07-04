@@ -1,0 +1,58 @@
+@import "../../../styles/base";
+
+.right-aligned-button {
+  float: right;
+}
+
+.projects-list {
+  width: 100%;
+  .no-projects-cell {
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+  }
+}
+
+.tabbed-projects-lists {
+  width: calc(100vw - 50px);
+
+  .projects {
+    width: 100%;
+
+    .projects-cell {
+      text-align: right;
+    }
+
+    .projects-cell:first-child,
+    .projects-cell:nth-child(2) {
+      text-align: left;
+    }
+  }
+}
+
+.aer-reconciliation {
+  width: calc(100vw - 50px);
+
+  .municipalities {
+    width: 100%;
+
+    .municipality-header {
+      text-align: center;
+    }
+
+    .municipality-cell {
+      text-align: right;
+    }
+
+    .municipality-cell:first-child {
+      text-align: left;
+    }
+
+    .municipality-cell-long {
+      text-align: left;
+      max-width: 10rem;
+      padding-left: .5rem;
+    }
+  }
+}
+

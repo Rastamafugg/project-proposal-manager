@@ -1,0 +1,31 @@
+@import "base";
+
+.readonly-field {
+  @include primary-font;
+
+  .label {
+    padding-bottom: .5rem;
+    font-size: .75rem;
+    color: rgba(0,0,0,.54);
+  }
+
+  .value {
+    padding-bottom: 1rem;
+    font-size: 1rem;
+    color: rgba(0,0,0);
+
+    .icon-and-label {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+  }
+
+  .mat-list {
+    padding: 0;
+
+    .mat-list-base .mat-list-item .mat-list-item-content {
+      padding: 0;
+    }
+  }
+}

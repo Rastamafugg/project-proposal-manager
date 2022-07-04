@@ -1,0 +1,207 @@
+<div class="page-title">
+  <h2 class="page-title-text">Annual Expenditure Report for Direct Allocation Projects FY {{getFiscalYearLabel()}}</h2>
+  <div class="page-title-buttons">
+    <button *ngIf="isEditable()" class="page-title-button" mat-raised-button matTooltip="Submit Annual Expenditure Report" color="primary" aria-label="Submit Annual Expenditure Report" (click)="submitForm()">
+      <mat-icon>save</mat-icon>
+    </button>
+    <button class="page-title-button" mat-raised-button matTooltip="Print Screen" color="primary" aria-label="Print Screen" (click)="printPage()">
+      <mat-icon>print</mat-icon>
+    </button>
+    <button class="page-title-button" mat-raised-button matTooltip="Back" color="primary" aria-label="Back" (click)="goToPreviousPage()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+</div>
+
+<form [formGroup]="aerForm">
+  <div class="page-section">
+    <h2 class="page-section-title">
+      Overview
+    </h2>
+
+    <div class="page-section-body">
+      <div class="readonly-field half-width">
+        <div class="label">Gas Tax Allocation received in FY {{getFiscalYearLabel()}}</div>
+        <div class="value">{{aer.allocationReceived | currency}}</div>
+      </div>
+      <mat-form-field *ngIf="isEditable()" class="half-width">
+        <input matInput placeholder="How much interest did you earn on your allocation fund in FY {{getFiscalYearLabel()}}?" type="number" formControlName="allocationInterest">
+      </mat-form-field>
+      <div *ngIf="!isEditable()" class="readonly-field half-width">
+        <div class="label">Interest earned on your allocation fund in FY {{getFiscalYearLabel()}}</div>
+        <div class="value">{{aer.allocationInterest | currency}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-section">
+    <h2 class="page-section-title">
+      Projects
+    </h2>
+
+    <div class="page-section-body">
+      <form [class]="getProjectActualAmountFormClasses()" [formGroup]="projectActualAmountForm">
+        <div class="readonly-field full-width">
+          <div class="label">Project Name</div>
+          <div class="value">{{projectActualAmountForm.get('projectTitle').value}}</div>
+        </div>
+        <div class="readonly-field half-width">
+          <div class="label">Planned Amount</div>
+          <div class="value">{{projectActualAmountForm.get('plannedAmount').value | currency}}</div>
+        </div>
+        <mat-form-field class="half-width">
+          <input matInput type="number" formControlName="actualAmount" placeholder="Actual Amount">
+        </mat-form-field>
+        <div class="half-width">
+          <button mat-raised-button matTooltip="Save Actual Amount" aria-label="Save Actual Amount" color="primary" class="expandable-form-button" (click)="saveProjectActualAmount()">
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-raised-button matTooltip="Cancel" aria-label="Cancel" color="primary" class="expandable-form-button" (click)="cancelProjectActualAmount()">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+      </form>
+      <table #capitalInvestmentPlans mat-table class="projects full-width" [dataSource]="aerForm.get('capitalInvestmentPlans').controls">
+        <ng-container matColumnDef="projectName">
+          <th mat-header-cell *matHeaderCellDef>Project Name</th>
+          <td mat-cell *matCellDef="let plan">{{plan.value.projectTitle}}</td>
+        </ng-container>
+        <ng-container matColumnDef="projectNumber">
+          <th mat-header-cell *matHeaderCellDef>Project Number</th>
+          <td mat-cell *matCellDef="let plan">{{plan.value.projectNumber}}</td>
+        </ng-container>
+        <ng-container matColumnDef="projectVersion">
+          <th mat-header-cell *matHeaderCellDef>Project Version</th>
+          <td mat-cell *matCellDef="let plan">{{plan.value.version}}</td>
+        </ng-container>
+        <ng-container matColumnDef="plannedAmount">
+          <th mat-header-cell *matHeaderCellDef class="align-right">Planned Amount</th>
+          <td mat-cell *matCellDef="let plan" class="align-right">{{getPlannedAllocatedGasTaxFunds(plan.value) | currency}}</td>
+        </ng-container>
+        <ng-container matColumnDef="actualAmount">
+          <th mat-header-cell *matHeaderCellDef class="align-right">Actual Amount</th>
+          <td mat-cell *matCellDef="let plan" class="editable-row align-right" (click)="editProjectActualAmount(plan.value)">{{getActualAllocatedGasTaxFunds(plan.value) | currency}}</td>
+        </ng-container>
+        <ng-container matColumnDef="projectStatus">
+          <th mat-header-cell *matHeaderCellDef class="align-right">Project Status</th>
+          <td mat-cell *matCellDef="let plan" class="align-right">{{getStateText(plan.value.state)}}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="align-centre">Actions</th>
+          <td mat-cell *matCellDef="let plan" class="align-centre">
+            <ng-container *ngIf="!isEditable()">
+              <a [routerLink]="getViewCipLink(plan)" routerLinkActive="active">
+                <button mat-icon-button color="primary" aria-label="Amend">
+                  <mat-icon>pageview</mat-icon>
+                </button>
+              </a>
+            </ng-container>
+            <ng-container *ngIf="isEditable()">
+              <ng-container *ngIf="isPlanInDraft(plan)">
+                <a [routerLink]="getEditCipLink(plan)" routerLinkActive="active">
+                  <button mat-icon-button color="primary" aria-label="Edit">
+                    <mat-icon>create</mat-icon>
+                  </button>
+                </a>
+                <button mat-icon-button color="primary" aria-label="Submit" (click)="submitCIP(plan)">
+                  <mat-icon>publish</mat-icon>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="isPlanSubmitted(plan)">
+                <a [routerLink]="getViewCipLink(plan)" routerLinkActive="active">
+                  <button mat-icon-button color="primary" aria-label="Amend">
+                    <mat-icon>pageview</mat-icon>
+                  </button>
+                </a>
+                <button mat-icon-button color="primary" aria-label="Recall" (click)="recallCIP(plan)">
+                  <mat-icon>undo</mat-icon>
+                </button>
+              </ng-container>
+              <ng-container *ngIf="isPlanAmendable(plan)">
+                <a [routerLink]="getViewCipLink(plan)" routerLinkActive="active">
+                  <button mat-icon-button color="primary" aria-label="Amend">
+                    <mat-icon>pageview</mat-icon>
+                  </button>
+                </a>
+                <button *ngIf="isPlanApproved(plan)" mat-icon-button color="primary" aria-label="Project Completed" (click)="completeProject(plan)">
+                  <mat-icon>done</mat-icon>
+                </button>
+                <button *ngIf="isPlanApproved(plan)" mat-icon-button color="primary" aria-label="Request Project Withdrawal" (click)="requestProjectWithdrawal(plan)">
+                  <mat-icon>undo</mat-icon>
+                </button>
+                <a [routerLink]="getAmendCipLink(plan)" routerLinkActive="active">
+                  <button mat-icon-button color="primary" aria-label="Amend">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </a>
+              </ng-container>
+              <ng-container *ngIf="isPlanReadOnly(plan)">
+                <a [routerLink]="getViewCipLink(plan)" routerLinkActive="active">
+                  <button mat-icon-button color="primary" aria-label="Amend">
+                    <mat-icon>pageview</mat-icon>
+                  </button>
+                </a>
+              </ng-container>
+            </ng-container>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="totalAllocatedGasTaxFunds">
+          <td mat-footer-cell *matFooterCellDef colspan="3">
+            <strong>Total Allocated Gas Tax Funds</strong>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="plannedTotalAllocatedGasTaxFundsAmount">
+          <td mat-footer-cell *matFooterCellDef class="align-right">
+            {{getPlannedTotalAllocatedGasTaxFunds() | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actualTotalAllocatedGasTaxFundsAmount">
+          <td mat-footer-cell *matFooterCellDef class="align-right">
+            {{getActualTotalAllocatedGasTaxFunds() | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="overUnderCommittedFunds">
+          <td mat-footer-cell *matFooterCellDef colspan="3">
+            <strong>Over/Under Committed Funds</strong>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="plannedOverUnderCommittedFundsAmount">
+          <td mat-footer-cell *matFooterCellDef class="align-right">
+            {{getPlannedOverUnderCommittedGasTaxFunds() | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actualOverUnderCommittedFundsAmount">
+          <td mat-footer-cell *matFooterCellDef class="align-right">
+            {{getActualOverUnderCommittedGasTaxFunds() | currency}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="allocationFundsExpended">
+          <th mat-header-cell *matHeaderCellDef class="align-right" colspan="2">Gas Tax Allocation Funds Expended in FY {{getFiscalYearLabel()}}</th>
+        </ng-container>
+        <ng-container matColumnDef="spacer">
+          <th mat-header-cell *matHeaderCellDef class="align-right"></th>
+          <td mat-footer-cell *matFooterCellDef class="align-right" colspan="2"></td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['spacer', 'spacer', 'spacer', 'allocationFundsExpended', 'spacer', 'spacer']"></tr>
+        <tr mat-header-row *matHeaderRowDef="planColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: planColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="['totalAllocatedGasTaxFunds', 'plannedTotalAllocatedGasTaxFundsAmount', 'actualTotalAllocatedGasTaxFundsAmount', 'spacer']"></tr>
+        <tr mat-footer-row *matFooterRowDef="['overUnderCommittedFunds', 'plannedOverUnderCommittedFundsAmount', 'actualOverUnderCommittedFundsAmount', 'spacer']"></tr>
+      </table>
+<!--      <tr class="projects-row" *ngFor="let plan of aer?.capitalInvestmentPlans">-->
+<!--        <td class="projects-cell"><strong>Total Allocated Gas Tax Funds</strong> {{getTotalAllocatedGasTaxFunds() | currency}}</td>-->
+<!--      </tr>-->
+<!--      <tr class="projects-row" *ngFor="let plan of aer?.capitalInvestmentPlans">-->
+<!--        <td class="projects-cell"><strong>Over/Under Committed Funds</strong> {{getOverUnderCommittedGasTaxFunds() | currency}}</td>-->
+<!--      </tr>-->
+    </div>
+  </div>
+
+  <div class="page-footer-buttons">
+    <button *ngIf="isEditable()" class="page-footer-button" mat-raised-button matTooltip="Submit Annual Expenditure Report" color="primary" aria-label="Submit Annual Expenditure Report" (click)="submitForm()">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+</form>
+

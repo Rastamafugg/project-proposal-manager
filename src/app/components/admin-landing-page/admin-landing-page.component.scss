@@ -1,0 +1,20 @@
+@import "../../../styles/base";
+
+.admin-tools {
+  margin: 1rem 0;
+  border: 1px solid $primary-accent-colour;
+  border-radius: 1rem;
+  display: grid;
+  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-rows: auto;
+
+  .provincial-link {
+    margin: .5rem;
+    grid-column-start: span 4;
+  }
+
+  .municipal-link {
+    margin: 0 .5rem;
+  }
+}
+

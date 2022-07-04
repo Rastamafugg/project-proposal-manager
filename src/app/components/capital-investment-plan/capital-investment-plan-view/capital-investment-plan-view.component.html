@@ -1,0 +1,334 @@
+<div class="page-title">
+  <h2 class="page-title-text">Capital Investment Plan</h2>
+  <div class="page-title-buttons">
+    <button class="page-title-button" mat-raised-button matTooltip="Print Screen" color="primary" aria-label="Print Screen" (click)="printPage()">
+      <mat-icon>print</mat-icon>
+    </button>
+    <button class="page-title-button" mat-raised-button matTooltip="Back" color="primary" aria-label="Back" (click)="goToPreviousPage()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+</div>
+
+<div class="page-section" *ngIf="this.isProvincialInterface">
+  <div class="page-section-body">
+    <div class="readonly-field full-width">
+      <div class="label">Municipality</div>
+      <div class="value">{{getMunicipalityName()}}</div>
+    </div>
+  </div>
+</div>
+
+<div class="page-section">
+  <h2 class="page-section-title">Project Overview</h2>
+
+  <div class="page-section-body">
+    <div class="readonly-field half-width">
+      <div class="label">Project Title</div>
+      <div class="value">{{cip.projectTitle}}</div>
+    </div>
+
+    <div class="readonly-field half-width">
+      <div class="label">Project Categories</div>
+      <div class="value">{{getProjectCategories()}}</div>
+    </div>
+  </div>
+</div>
+
+<div class="page-section">
+  <h2 class="page-section-title">Project Information</h2>
+
+  <div class="page-section-body">
+    <div class="readonly-field full-width">
+      <div class="label">Brief Project Description</div>
+      <div class="value">{{cip.projectDescription}}</div>
+    </div>
+    <div class="readonly-field full-width">
+      <div class="label">Project Location(s) (Street Address and/or PID)</div>
+      <div class="value">{{cip.projectLocation}}</div>
+    </div>
+    <div class="readonly-field half-width">
+      <div class="label">Municipality</div>
+      <div class="value">{{cip.projectMunicipality}}</div>
+    </div>
+    <div class="readonly-field half-width">
+      <div class="label">Postal Code</div>
+      <div class="value">{{cip.projectPostalCode}}</div>
+    </div>
+    <div class="readonly-field half-width">
+      <div class="value">
+        <span class="icon-and-label">
+          <mat-icon *ngIf="cip.councilResolutionMailed" color="primary" aria-hidden="true">check_box</mat-icon>
+          <mat-icon *ngIf="!cip.councilResolutionMailed" color="primary" aria-hidden="false">check_box_outline_blank</mat-icon>
+          <span>Signed & Sealed Council Resolution Mailed?</span>
+        </span>
+      </div>
+    </div>
+    <div class="readonly-field half-width">
+      <div class="label">Date of Resolution</div>
+      <div class="value">{{cip.dateOfResolution | date:'mediumDate'}}</div>
+    </div>
+    <div class="readonly-field half-width">
+      <div class="label">Is this a renewal, expansion, or a new installation?</div>
+      <div class="value">{{getProjectTypeLabel()}}</div>
+    </div>
+  </div>
+</div>
+
+<div class="page-section print-page-break">
+  <h2 class="page-section-title">Estimated Eligible Costs</h2>
+  <h3 class="page-section-sub-title">Cost Breakdown</h3>
+
+  <div class="page-section-body">
+    <table mat-table class="financing full-width" [dataSource]="cip?.costBreakdown">
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef><strong>Category</strong></th>
+        <td mat-cell *matCellDef="let activity">
+          {{getActivityTypeLabel(activity.activityType)}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef class="align-right"><strong>Amount</strong></th>
+        <td mat-cell *matCellDef="let activity" class="align-right">
+          {{activity.amount | currency}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="subtotal">
+        <td mat-footer-cell *matFooterCellDef>
+          <strong>Subtotal</strong>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="subtotalAmount">
+        <td mat-footer-cell *matFooterCellDef class="align-right">
+          {{getCostBreakdownSubtotal() | currency}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totalHST">
+        <td mat-footer-cell *matFooterCellDef>
+          <strong>Total HST</strong>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totalHSTAmount">
+        <td mat-footer-cell *matFooterCellDef class="align-right">
+          {{getCostBreakdownTotalHST() | currency}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="minusHSTRebate">
+        <td mat-footer-cell *matFooterCellDef>
+          <strong>Minus HST Rebate</strong>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="minusHSTRebateAmount">
+        <td mat-footer-cell *matFooterCellDef class="align-right">
+          {{getCostBreakdownMinusHSTRebate() | currency}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totalEligibleCosts">
+        <td mat-footer-cell *matFooterCellDef>
+          <strong>Total Eligible Costs</strong>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totalEligibleCostsAmount">
+        <td mat-footer-cell *matFooterCellDef class="align-right">
+          {{getCostBreakdownTotalEligibleCosts() | currency}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="activityTableColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: activityTableColumns;"></tr>
+      <tr mat-footer-row *matFooterRowDef="['subtotal', 'subtotalAmount']"></tr>
+      <tr mat-footer-row *matFooterRowDef="['totalHST', 'totalHSTAmount']"></tr>
+      <tr mat-footer-row *matFooterRowDef="['minusHSTRebate', 'minusHSTRebateAmount']"></tr>
+      <tr mat-footer-row *matFooterRowDef="['totalEligibleCosts', 'totalEligibleCostsAmount']"></tr>
+    </table>
+  </div>
+</div>
+
+<div class="page-section print-page-break">
+  <h2 class="page-section-title">Gas Tax Expenditure Timeline</h2>
+
+  <div class="page-section-body">
+    <table mat-table class="financing full-width" [dataSource]="cip?.gasTaxExpenditureTimeline">
+      <ng-container matColumnDef="year">
+        <th mat-header-cell *matHeaderCellDef><strong>Year</strong></th>
+        <td mat-cell *matCellDef="let timelineItem">
+          {{getFiscalYearLabel(timelineItem.year)}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="plannedAmount">
+        <th mat-header-cell *matHeaderCellDef class="align-right"><strong>Planned Amount</strong></th>
+        <td mat-cell *matCellDef="let timelineItem" class="align-right">
+          {{timelineItem.plannedAmount | currency}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="actualAmount">
+        <th mat-header-cell *matHeaderCellDef class="align-right"><strong>Actual Amount</strong></th>
+        <td mat-cell *matCellDef="let timelineItem" class="align-right">
+          {{timelineItem.actualAmount | currency}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="total">
+        <td mat-footer-cell *matFooterCellDef>
+          <strong>Total</strong>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totalPlannedAmount">
+        <td mat-footer-cell *matFooterCellDef class="align-right">
+          {{gasTaxExpenditureTimelinePlannedTotal() | currency}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="totalActualAmount">
+        <td mat-footer-cell *matFooterCellDef class="align-right">
+          {{gasTaxExpenditureTimelineActualTotal() | currency}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="expenditureTimelineColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: expenditureTimelineColumns;"></tr>
+      <tr mat-footer-row *matFooterRowDef="['total', 'totalPlannedAmount', 'totalActualAmount']"></tr>
+    </table>
+  </div>
+</div>
+
+<div class="page-section">
+  <h2 class="page-section-title">Proposed Sources of Funding</h2>
+
+  <div class="page-section-body">
+    <table mat-table class="financing full-width" [dataSource]="cip?.proposedSourcesOfFunding">
+      <ng-container matColumnDef="fundingSource">
+        <th mat-header-cell *matHeaderCellDef><strong>Project Funding Source</strong></th>
+        <td mat-cell *matCellDef="let source">
+          {{getFundingSourceLabel(source.fundingSource)}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="program">
+        <th mat-header-cell *matHeaderCellDef><strong>Program</strong></th>
+        <td mat-cell *matCellDef="let source">
+          {{source.program}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="confirmed">
+        <th mat-header-cell *matHeaderCellDef class="align-centre"><strong>Confirmed?</strong></th>
+        <td mat-cell *matCellDef="let source" class="align-centre">
+          <mat-icon *ngIf="source.confirmed" color="primary" aria-hidden="true">check_box</mat-icon>
+          <mat-icon *ngIf="!source.confirmed" color="primary" aria-hidden="false">check_box_outline_blank</mat-icon>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef class="align-right"><strong>Amount</strong></th>
+        <td mat-cell *matCellDef="let source" class="align-right">
+          {{source.amount | currency}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="fundingSourcesColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: fundingSourcesColumns;"></tr>
+    </table>
+  </div>
+</div>
+
+<div class="page-section print-page-break">
+  <h2 class="page-section-title">Project Timelines</h2>
+
+  <div class="page-section-body">
+    <table mat-table class="financing full-width" [dataSource]="cip?.projectTimelines">
+      <ng-container matColumnDef="activity">
+        <th mat-header-cell *matHeaderCellDef><strong>Activity</strong></th>
+        <td mat-cell *matCellDef="let timelineEntry">
+          {{getProjectTimelineLabel(timelineEntry.activity)}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef class="align-right"><strong>Start Date</strong></th>
+        <td mat-cell *matCellDef="let timelineEntry" class="align-right">
+          {{timelineEntry.startDate | date:'mediumDate'}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="completionDate">
+        <th mat-header-cell *matHeaderCellDef class="align-right"><strong>Completion Date</strong></th>
+        <td mat-cell *matCellDef="let timelineEntry" class="align-right">
+          {{timelineEntry.completionDate | date:'mediumDate'}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="projectTimelinesColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: projectTimelinesColumns;"></tr>
+    </table>
+  </div>
+</div>
+
+<div class="page-section print-page-break">
+  <h2 class="page-section-title">Outcomes & Planning</h2>
+
+  <div class="page-section-body">
+    <mat-list class="full-width">
+      <mat-list-item *ngFor="let outcome of cip?.outcomesAndPlanning">
+        <mat-icon *ngIf="outcome.selected" color="primary" aria-hidden="true">check_box</mat-icon>
+        <mat-icon *ngIf="!outcome.selected" color="primary" aria-hidden="false">check_box_outline_blank</mat-icon>
+        {{getOutcomesAndPlanningLabel(outcome.code)}}
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
+
+<div class="page-section print-page-break">
+  <h2 class="page-section-title">Schedule H Indicators and Outcomes</h2>
+
+  <div class="page-section-body">
+    <ng-container *ngFor="let projectCategory of cip?.scheduleHIndicators">
+      <h3 class="page-section-sub-title">{{getScheduleHIndicatorLabel(projectCategory.projectCategoryCode)}}</h3>
+      <mat-list class="full-width">
+        <mat-list-item *ngFor="let outcome of projectCategory.outcomes">
+          <mat-icon *ngIf="outcome.selected" color="primary" aria-hidden="true">check_box</mat-icon>
+          <mat-icon *ngIf="!outcome.selected" color="primary" aria-hidden="false">check_box_outline_blank</mat-icon>
+          {{getScheduleHIndicatorOutcomeLabel(outcome.code)}}
+        </mat-list-item>
+      </mat-list>
+    </ng-container>
+  </div>
+</div>
+
+<!--  <div class="page-section-body">-->
+<!--    <h2 class="sub-section-title">Base Amount</h2>-->
+<!--    <p>Please provide your municipal expenditures for the categories listed below. For projects which were cost-shared through funding programs, only include the municipal share of the project costs. If you already completed this section on another application please leave blank.</p>-->
+<!--    <h3>GAS TAX - BASE AMOUNT</h3>-->
+<!--    <table class="financing">-->
+<!--      <tr class="financing-header-row">-->
+<!--        <th class="financing-cell">Categories</th>-->
+<!--        <th class="financing-cell" colspan="4">Capital Expended Amounts</th>-->
+<!--      </tr>-->
+<!--      <tr class="financing-header-row">-->
+<!--        <th class="financing-cell"></th>-->
+<!--        <th class="financing-cell">2015/16</th>-->
+<!--        <th class="financing-cell">2016/17</th>-->
+<!--        <th class="financing-cell">2017/18</th>-->
+<!--        <th class="financing-cell">2018/19</th>-->
+<!--      </tr>-->
+<!--&lt;!&ndash;Short-Line Rail&ndash;&gt;-->
+<!--      <tr class="financing-header-row">-->
+<!--        <th class="financing-row-cell" colspan="5">Disaster Mitigation</th>-->
+<!--      </tr>-->
+<!--      <tr class="financing-row">-->
+<!--        <td class="financing-cell">Seawall</td>-->
+<!--        <td class="financing-cell">$0.00</td>-->
+<!--        <td class="financing-cell">$0.00</td>-->
+<!--        <td class="financing-cell">$550,000.00</td>-->
+<!--        <td class="financing-cell">$400,000.00</td>-->
+<!--      </tr>-->
+<!--    </table>-->
+<!--  </div>-->
+
+<div class="page-section print-page-break">
+  <h2 class="page-section-title">Program Requirements</h2>
+  <p class="page-section-note">The following are requirements of the program:</p>
+
+  <div class="page-section-body">
+    <mat-list class="full-width">
+      <mat-list-item *ngFor="let requirement of cip?.programRequirements">
+        <mat-icon *ngIf="requirement.selected" color="primary" aria-hidden="true">check_box</mat-icon>
+        <mat-icon *ngIf="!requirement.selected" color="primary" aria-hidden="false">check_box_outline_blank</mat-icon>
+        {{getRequirementLabel(requirement.code)}}
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

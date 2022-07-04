@@ -1,0 +1,24 @@
+@import "../../../styles/base";
+@import "../../../styles/readonly-fields";
+
+.action-form {
+  @include expandable-form;
+  max-height: 16rem;
+}
+
+.aer-reconciliation-action {
+  &:hover {
+    .action-icon, .action-date, .action-description {
+      color: $primary-accent-colour;
+    }
+  }
+
+  .action-date, .action-description {
+    padding-left: .5rem;
+  }
+}
+
+.project-actual-amount-form {
+  @include expandable-form;
+  max-height: 16rem;
+}

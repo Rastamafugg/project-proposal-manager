@@ -1,0 +1,93 @@
+<div class="page-title">
+  <h2 class="page-title-text">Contact Information</h2>
+  <div class="page-title-buttons">
+    <button [disabled]="contactForm.invalid" class="page-title-button" mat-raised-button matTooltip="Save Contact Info" aria-label="Save Contact Info" color="primary" (click)="submitForm()">
+      <mat-icon>save</mat-icon>
+    </button>
+    <button class="page-title-button" mat-raised-button matTooltip="Print Screen" color="primary" aria-label="Print Screen" (click)="printPage()">
+      <mat-icon>print</mat-icon>
+    </button>
+    <button class="page-title-button" mat-raised-button matTooltip="Back" color="primary" aria-label="Back" (click)="goToPreviousPage()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+</div>
+
+<form [formGroup]="contactForm">
+  <div class="page-section">
+    <h2 class="page-section-title">
+      Municipal Contact
+    </h2>
+
+    <div class="page-section-body">
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Rural Municipality/Town/City of" type="text" formControlName="municipalName">
+        <mat-error *ngIf="contactForm.get('municipalName').errors?.required">Municipal Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Street Address/P.O. Box" type="text" formControlName="streetAddress">
+        <mat-error *ngIf="contactForm.get('streetAddress').errors?.required">Street Address is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Postal Code" type="text" formControlName="postalCode">
+        <mat-error *ngIf="contactForm.get('postalCode').errors?.required">Postal Code is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Municipal Telephone" type="text" formControlName="phoneNumber">
+        <mat-error *ngIf="contactForm.get('phoneNumber').errors?.required">Municipal Telephone is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Municipal Email" type="text" formControlName="emailAddress">
+        <mat-error *ngIf="contactForm.get('emailAddress').errors?.required">Municipal Email is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Municipal Fax" type="text" formControlName="faxNumber">
+        <mat-error *ngIf="contactForm.get('faxNumber').errors?.required">Municipal Fax is required</mat-error>
+      </mat-form-field>
+      <div class="half-width"></div>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Contact Name" type="text" formControlName="contactName">
+        <mat-error *ngIf="contactForm.get('contactName').errors?.required">Contact Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Official Title" type="text" formControlName="officialTitle">
+        <mat-error *ngIf="contactForm.get('officialTitle').errors?.required">Official Title is required</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="page-section">
+    <h2 class="page-section-title">
+      Municipal Auditor Contact
+    </h2>
+
+    <div class="page-section-body">
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Audit Firm's Name" type="text" formControlName="auditFirmName">
+        <mat-error *ngIf="contactForm.get('auditFirmName').errors?.required">Audit Firm's Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Auditor's Name" type="text" formControlName="auditorName">
+        <mat-error *ngIf="contactForm.get('auditorName').errors?.required">Auditor's Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Auditor Telephone" type="text" formControlName="auditorPhoneNumber">
+        <mat-error *ngIf="contactForm.get('auditorPhoneNumber').errors?.required">Auditor Telephone is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Auditor Email" type="text" formControlName="auditorEmailAddress">
+        <mat-error *ngIf="contactForm.get('auditorEmailAddress').errors?.required">Auditor Email is required</mat-error>
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Auditor Fax" type="text" formControlName="auditorFaxNumber">
+        <mat-error *ngIf="contactForm.get('auditorFaxNumber').errors?.required">Auditor Fax is required</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="page-footer-buttons">
+    <button [disabled]="contactForm.invalid" mat-raised-button matTooltip="Save Contact Info" aria-label="Save Contact Info" color="primary" class="page-footer-button" (click)="submitForm()">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+</form>

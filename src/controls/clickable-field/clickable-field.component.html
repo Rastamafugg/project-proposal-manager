@@ -1,0 +1,4 @@
+<td class="financing-cell" *ngIf="!isSelectedPath()" (click)="setSelectedPath()">{{readOnlyValue}}</td>
+<td class="financing-cell" *ngIf="isSelectedPath()">
+  <mat-checkbox [formControlName]="controlName"></mat-checkbox>
+</td>

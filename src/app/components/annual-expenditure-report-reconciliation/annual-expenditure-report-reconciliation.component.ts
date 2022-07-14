@@ -281,8 +281,8 @@ export class AnnualExpenditureReportReconciliationComponent extends UserFormComp
 
   private getCipLink(cipAction: string, projectNumber: string = null, version: number = null) {
     return (projectNumber === null)
-      ? ['/provincial', 'cip', cipAction, this.municipalCode]
-      : ['/provincial', 'cip', cipAction, this.municipalCode, projectNumber, version];
+      ? ['/regional', 'cip', cipAction, this.municipalCode]
+      : ['/regional', 'cip', cipAction, this.municipalCode, projectNumber, version];
   }
 
   getEditCipLink(plan: CapitalInvestmentPlan) {

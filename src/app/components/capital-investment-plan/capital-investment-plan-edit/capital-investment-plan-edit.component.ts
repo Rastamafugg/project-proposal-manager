@@ -26,7 +26,7 @@ export class CapitalInvestmentPlanEditComponent implements OnInit, OnChanges {
   @Input() cip: CapitalInvestmentPlan;
   @Input() municipalContactInfo: ContactInfo;
   @Input() allMunicipalCips: CapitalInvestmentPlan[];
-  @Input() isProvincialInterface: boolean;
+  @Input() isRegionalInterface: boolean;
   @Input() projectTypes: CodeType[] = [];
   @Input() activityTypes: CodeType[] = [];
   @Input() outcomesAndPlanningTypes: CodeType[] = [];

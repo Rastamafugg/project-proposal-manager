@@ -4,7 +4,7 @@
   [cip]="targetCIP$ | async"
   [municipalContactInfo]="municipalContactInfo$ | async"
   [allMunicipalCips]="allMunicipalCips$ | async"
-  [isProvincialInterface]="false"
+  [isRegionalInterface]="false"
   [projectTypes]="projectTypes$ | async"
   [activityTypes]="activityTypes$ | async"
   [outcomesAndPlanningTypes]="outcomesAndPlanningTypes$ | async"
@@ -30,7 +30,7 @@
 
 <app-capital-investment-plan-edit *ngIf="isActionType(CIPAction.NEW)"
   [municipalContactInfo]="municipalContactInfo$ | async"
-  [isProvincialInterface]="false"
+  [isRegionalInterface]="false"
   [projectTypes]="projectTypes$ | async"
   [activityTypes]="activityTypes$ | async"
   [outcomesAndPlanningTypes]="outcomesAndPlanningTypes$ | async"

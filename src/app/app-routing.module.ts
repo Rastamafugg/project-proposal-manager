@@ -30,7 +30,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'provincial',
+    path: 'regional',
     children: [
       {path: '', component: RegionalLandingPageComponent},
       {

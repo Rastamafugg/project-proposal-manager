@@ -17,7 +17,7 @@ import {Location} from '@angular/common';
 export class CapitalInvestmentPlanViewComponent {
   @Input() cip: CapitalInvestmentPlan;
   @Input() municipalContactInfo: ContactInfo;
-  @Input() isProvincialInterface: boolean;
+  @Input() isRegionalInterface: boolean;
   @Input() projectTypes: CodeType[] = [];
   @Input() activityTypes: CodeType[] = [];
   @Input() outcomesAndPlanningTypes: CodeType[] = [];

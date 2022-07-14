@@ -196,15 +196,15 @@ export class RegionalLandingPageComponent implements OnInit {
   }
 
   getCipLink(plan: CapitalInvestmentPlan) {
-    return ['/provincial', 'cip', 'edit', plan.municipalCode, plan.projectNumber, plan.version];
+    return ['/regional', 'cip', 'edit', plan.municipalCode, plan.projectNumber, plan.version];
   }
 
   getAerLink(municipalCode: string, fiscalYear: number) {
-    return ['/provincial', 'aer-reconciliation', municipalCode, fiscalYear];
+    return ['/regional', 'aer-reconciliation', municipalCode, fiscalYear];
   }
 
   getReportsLink(municipalCode: string) {
-    return ['/provincial', 'municipal-reports', municipalCode];
+    return ['/regional', 'municipal-reports', municipalCode];
   }
 
   getUnallocatedGasTaxAmount(report: AnnualExpenditureReport) {

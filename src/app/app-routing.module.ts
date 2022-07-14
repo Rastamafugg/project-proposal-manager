@@ -6,7 +6,7 @@ import {MunicipalContactInformationComponent} from './components/municipal-conta
 import {
   AnnualExpenditureReportReconciliationComponent
 } from './components/annual-expenditure-report-reconciliation/annual-expenditure-report-reconciliation.component';
-import {ProvincialLandingPageComponent} from './components/provincial-landing-page/provincial-landing-page.component';
+import {RegionalLandingPageComponent} from './components/regional-landing-page/regional-landing-page.component';
 import {AdminLandingPageComponent} from './components/admin-landing-page/admin-landing-page.component';
 import {MunicipalCipContainerComponent} from './containers/municipal-cip-container/municipal-cip-container.component';
 import {ProvincialCipContainerComponent} from './containers/provincial-cip-container/provincial-cip-container.component';
@@ -32,7 +32,7 @@ const routes: Routes = [
   {
     path: 'provincial',
     children: [
-      {path: '', component: ProvincialLandingPageComponent},
+      {path: '', component: RegionalLandingPageComponent},
       {
         path: 'cip/:actionType/:municipalCode/:projectNumber/:projectVersion',
         component: ProvincialCipContainerComponent,

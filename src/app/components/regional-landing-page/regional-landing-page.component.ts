@@ -23,11 +23,11 @@ import {MunicipalAllocations} from '../../../store/municipal-allocations/municip
 import moment from 'moment';
 
 @Component({
-  selector: 'app-provincial-landing-page',
-  templateUrl: './provincial-landing-page.component.html',
-  styleUrls: ['./provincial-landing-page.component.scss']
+  selector: 'app-regional-landing-page',
+  templateUrl: './regional-landing-page.component.html',
+  styleUrls: ['./regional-landing-page.component.scss']
 })
-export class ProvincialLandingPageComponent implements OnInit {
+export class RegionalLandingPageComponent implements OnInit {
   public plans: CapitalInvestmentPlan[] = [];
   public municipalities: Municipality[] = [];
   public annualExpenditureReportColumns: string[] = [

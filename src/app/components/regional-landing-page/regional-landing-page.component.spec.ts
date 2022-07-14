@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProvincialLandingPageComponent } from './provincial-landing-page.component';
+import { RegionalLandingPageComponent } from './regional-landing-page.component';
 
 describe('ProvincialLandingPageComponent', () => {
-  let component: ProvincialLandingPageComponent;
-  let fixture: ComponentFixture<ProvincialLandingPageComponent>;
+  let component: RegionalLandingPageComponent;
+  let fixture: ComponentFixture<RegionalLandingPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProvincialLandingPageComponent ]
+      declarations: [ RegionalLandingPageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProvincialLandingPageComponent);
+    fixture = TestBed.createComponent(RegionalLandingPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

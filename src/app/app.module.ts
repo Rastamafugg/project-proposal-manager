@@ -14,7 +14,7 @@ import {
 } from './components/annual-expenditure-report-reconciliation/annual-expenditure-report-reconciliation.component';
 import {MunicipalLandingPageComponent} from './components/municipal-landing-page/municipal-landing-page.component';
 import {MunicipalContactInformationComponent} from './components/municipal-contact-information/municipal-contact-information.component';
-import { ProvincialLandingPageComponent } from './components/provincial-landing-page/provincial-landing-page.component';
+import { RegionalLandingPageComponent } from './components/regional-landing-page/regional-landing-page.component';
 import {AdminLandingPageComponent} from './components/admin-landing-page/admin-landing-page.component';
 import { MunicipalCipContainerComponent } from './containers/municipal-cip-container/municipal-cip-container.component';
 import {ControlsModule} from '../controls/controls.module';
@@ -64,7 +64,7 @@ import {CanDeactivateGuard} from './directives/can-deactivate-guard/can-deactiva
     MunicipalLandingPageComponent,
     MunicipalReportsComponent,
     ProvincialCipContainerComponent,
-    ProvincialLandingPageComponent,
+    RegionalLandingPageComponent,
   ],
   imports: [
     AppRoutingModule,

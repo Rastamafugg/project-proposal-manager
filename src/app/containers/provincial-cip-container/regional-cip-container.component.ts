@@ -46,11 +46,11 @@ import {ContactInfo} from '../../../store/contact-info/contact-info.state';
 import {UserFormComponent} from '../../directives/can-deactivate-guard/user-form-component';
 
 @Component({
-  selector: 'app-provincial-cip-container',
-  templateUrl: './provincial-cip-container.component.html',
-  styleUrls: ['./provincial-cip-container.component.scss']
+  selector: 'app-regional-cip-container',
+  templateUrl: './regional-cip-container.component.html',
+  styleUrls: ['./regional-cip-container.component.scss']
 })
-export class ProvincialCipContainerComponent extends UserFormComponent implements OnInit {
+export class RegionalCipContainerComponent extends UserFormComponent implements OnInit {
   CIPAction = CIPAction;
   municipalCode;
   projectNumber;

@@ -29,7 +29,7 @@ import {
   CapitalInvestmentPlanEditComponent,
   CapitalInvestmentPlanViewComponent,
 } from './components/capital-investment-plan';
-import {ProvincialCipContainerComponent} from './containers/provincial-cip-container/provincial-cip-container.component';
+import {RegionalCipContainerComponent} from './containers/provincial-cip-container/regional-cip-container.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -63,7 +63,7 @@ import {CanDeactivateGuard} from './directives/can-deactivate-guard/can-deactiva
     MunicipalContactInformationComponent,
     MunicipalLandingPageComponent,
     MunicipalReportsComponent,
-    ProvincialCipContainerComponent,
+    RegionalCipContainerComponent,
     RegionalLandingPageComponent,
   ],
   imports: [

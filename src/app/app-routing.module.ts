@@ -9,7 +9,7 @@ import {
 import {RegionalLandingPageComponent} from './components/regional-landing-page/regional-landing-page.component';
 import {AdminLandingPageComponent} from './components/admin-landing-page/admin-landing-page.component';
 import {MunicipalCipContainerComponent} from './containers/municipal-cip-container/municipal-cip-container.component';
-import {RegionalCipContainerComponent} from './containers/provincial-cip-container/regional-cip-container.component';
+import {RegionalCipContainerComponent} from './containers/regional-cip-container/regional-cip-container.component';
 import {MunicipalReportsComponent} from './components/municipal-reports/municipal-reports.component';
 import {CanDeactivateGuard} from './directives/can-deactivate-guard/can-deactivate-guard';
 

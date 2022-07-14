@@ -29,7 +29,7 @@ import {
   CapitalInvestmentPlanEditComponent,
   CapitalInvestmentPlanViewComponent,
 } from './components/capital-investment-plan';
-import {RegionalCipContainerComponent} from './containers/provincial-cip-container/regional-cip-container.component';
+import {RegionalCipContainerComponent} from './containers/regional-cip-container/regional-cip-container.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDatepickerModule} from '@angular/material/datepicker';

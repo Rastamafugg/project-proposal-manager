@@ -14,7 +14,7 @@ export interface ProjectObjective {
   text: string;
   description: string;
   indicators: string[];
-  'national-objectives': string;
+  'regional-objectives': string;
 }
 
 export interface StaticDataState {

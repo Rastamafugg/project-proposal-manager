@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {CapitalInvestmentPlan} from '../../../../store/capital-investment-plan/capital-investment-plan.state';
 import {CodeType, ProjectObjective} from '../../../../store/static-data/static-data.state';
-import {FormBuilder} from '@angular/forms';
+import {UntypedFormBuilder} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {ApplicationState} from '../../../../store';
 import {RestService} from '../../../../services/rest.service';
@@ -34,7 +34,7 @@ export class CapitalInvestmentPlanViewComponent {
 
   constructor(
     private store: Store<ApplicationState>,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private restService: RestService,
     private uiUtils: UiUtilsService,
     private location: Location,

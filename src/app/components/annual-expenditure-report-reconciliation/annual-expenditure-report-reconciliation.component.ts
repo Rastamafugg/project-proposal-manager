@@ -13,7 +13,7 @@ import {
   updateAnnualExpenditureReport
 } from '../../../store/annual-expenditure-report/annual-expenditure-report.actions';
 import {selectAERs} from '../../../store/annual-expenditure-report/annual-expenditure-report.selectors';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {CodeType, Municipality} from '../../../store/static-data/static-data.state';
 import {selectAERActionTypes, selectMunicipalities} from '../../../store/static-data/static-data.selectors';
 import {loadAERActionTypes, loadMunicipalities} from '../../../store/static-data/static-data.actions';
@@ -41,7 +41,7 @@ export class AnnualExpenditureReportReconciliationComponent extends UserFormComp
 
   @ViewChild('capitalInvestmentPlans') capitalInvestmentPlansTable: MatTable<any>;
 
-  projectActualAmountForm: FormGroup;
+  projectActualAmountForm: UntypedFormGroup;
   showProjectActualAmountForm = false;
 
   private aers$;
@@ -52,7 +52,7 @@ export class AnnualExpenditureReportReconciliationComponent extends UserFormComp
     private store: Store<ApplicationState>,
     private route: ActivatedRoute,
     private location: Location,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private uiUtils: UiUtilsService,
     private snackbar: MatSnackBar,
   ) {
@@ -97,12 +97,12 @@ export class AnnualExpenditureReportReconciliationComponent extends UserFormComp
 
     this.actionForm = this.uiUtils.createReportActionForm();
 
-    this.projectActualAmountForm = new FormGroup({
-      projectTitle: new FormControl(null),
-      projectNumber: new FormControl(null),
-      version: new FormControl(null),
-      plannedAmount: new FormControl(0),
-      actualAmount: new FormControl(null, [Validators.required, Validators.min(0)]),
+    this.projectActualAmountForm = new UntypedFormGroup({
+      projectTitle: new UntypedFormControl(null),
+      projectNumber: new UntypedFormControl(null),
+      version: new UntypedFormControl(null),
+      plannedAmount: new UntypedFormControl(0),
+      actualAmount: new UntypedFormControl(null, [Validators.required, Validators.min(0)]),
     });
   }
 

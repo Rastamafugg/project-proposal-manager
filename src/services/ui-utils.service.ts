@@ -10,7 +10,7 @@ import {
   ProjectActivity,
   ProjectTimelineEntry
 } from '../store/capital-investment-plan/capital-investment-plan.state';
-import {FormBuilder, Validators} from '@angular/forms';
+import {UntypedFormBuilder, Validators} from '@angular/forms';
 import {CodeType} from '../store/static-data/static-data.state';
 import {
   AnnualExpenditureReport,
@@ -24,7 +24,7 @@ import {
 export class UiUtilsService {
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
   ) {
   }
 

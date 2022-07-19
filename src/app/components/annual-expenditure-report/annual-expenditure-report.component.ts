@@ -1,6 +1,6 @@
 import {Component, HostListener, OnChanges, OnInit, SimpleChange, ViewChild} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {CapitalInvestmentPlan, CIPAction} from '../../../store/capital-investment-plan/capital-investment-plan.state';
 import {ApplicationState} from '../../../store';
 import {ActivatedRoute, ParamMap} from '@angular/router';
@@ -31,7 +31,7 @@ export class AnnualExpenditureReportComponent extends UserFormComponent implemen
 
   @ViewChild('capitalInvestmentPlans') capitalInvestmentPlansTable: MatTable<any>;
 
-  projectActualAmountForm: FormGroup;
+  projectActualAmountForm: UntypedFormGroup;
   showProjectActualAmountForm = false;
   private aers$;
 
@@ -80,12 +80,12 @@ export class AnnualExpenditureReportComponent extends UserFormComponent implemen
   initializeForm(aer: AnnualExpenditureReport) {
     this.aerForm = this.uiUtils.createAnnualExpenditureReportForm(aer);
 
-    this.projectActualAmountForm = new FormGroup({
-      projectTitle: new FormControl(null),
-      projectNumber: new FormControl(null),
-      version: new FormControl(null),
-      plannedAmount: new FormControl(0),
-      actualAmount: new FormControl(0),
+    this.projectActualAmountForm = new UntypedFormGroup({
+      projectTitle: new UntypedFormControl(null),
+      projectNumber: new UntypedFormControl(null),
+      version: new UntypedFormControl(null),
+      plannedAmount: new UntypedFormControl(0),
+      actualAmount: new UntypedFormControl(0),
     });
   }
 

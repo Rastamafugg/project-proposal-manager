@@ -16,7 +16,7 @@ import {selectAERs} from '../../../store/annual-expenditure-report/annual-expend
 import {AnnualExpenditureReport} from '../../../store/annual-expenditure-report/annual-expenditure-report.state';
 import {ContactInfo} from '../../../store/contact-info/contact-info.state';
 import {selectMunicipalContactInfo} from '../../../store/contact-info/contact-info.selectors';
-import {FormArray, FormGroup} from '@angular/forms';
+import {UntypedFormArray, UntypedFormGroup} from '@angular/forms';
 import {UserFormComponent} from '../../directives/can-deactivate-guard/user-form-component';
 import {MatTable} from '@angular/material/table';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -36,8 +36,8 @@ export class MunicipalReportsComponent extends UserFormComponent implements OnIn
   private municipalCode;
   private previous5YearBlock = [];
   private current5YearBlock = [];
-  aersForm: FormArray;
-  allocationAmountForm: FormGroup;
+  aersForm: UntypedFormArray;
+  allocationAmountForm: UntypedFormGroup;
   showAllocationAmountForm = false;
 
   @ViewChild('current5YearReport') current5YearReportTable: MatTable<any>;

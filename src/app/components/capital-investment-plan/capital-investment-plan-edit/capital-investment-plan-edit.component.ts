@@ -1,6 +1,6 @@
 import {Location} from '@angular/common';
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, ViewChild} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {UntypedFormArray, UntypedFormBuilder, UntypedFormGroup} from '@angular/forms';
 import {MatTable} from '@angular/material/table';
 import {Store} from '@ngrx/store';
 import {
@@ -65,47 +65,47 @@ export class CapitalInvestmentPlanEditComponent implements OnInit, OnChanges {
 
   get costBreakdownControls() {
     return (this.form && this.form.get('costBreakdown'))
-      ? this.form.get('costBreakdown') as FormGroup
+      ? this.form.get('costBreakdown') as UntypedFormGroup
       : null;
   }
 
   get projectActivitiesControls() {
     return (this.form && this.form.get('costBreakdown'))
-      ? this.form.get('costBreakdown') as FormArray
+      ? this.form.get('costBreakdown') as UntypedFormArray
       : null;
   }
 
   get gasTaxExpenditureTimelineControls() {
     return (this.form && this.form.get('gasTaxExpenditureTimeline'))
-      ? this.form.get('gasTaxExpenditureTimeline') as FormArray
+      ? this.form.get('gasTaxExpenditureTimeline') as UntypedFormArray
       : null;
   }
 
   get proposedSourcesOfFundingControls() {
-    return this.form ? this.form.get('proposedSourcesOfFunding') as FormArray : null;
+    return this.form ? this.form.get('proposedSourcesOfFunding') as UntypedFormArray : null;
   }
 
   get projectTimelinesControls() {
-    return this.form ? this.form.get('projectTimelines') as FormArray : null;
+    return this.form ? this.form.get('projectTimelines') as UntypedFormArray : null;
   }
 
   get outcomesAndPlanningControls() {
-    return this.form ? this.form.get('outcomesAndPlanning') as FormArray : null;
+    return this.form ? this.form.get('outcomesAndPlanning') as UntypedFormArray : null;
   }
 
   get indicatorControls() {
-    return this.form ? this.form.get('scheduleHIndicators') as FormArray : null;
+    return this.form ? this.form.get('scheduleHIndicators') as UntypedFormArray : null;
   }
 
   get requirementsControls() {
-    return this.form ? this.form.get('programRequirements') as FormArray : null;
+    return this.form ? this.form.get('programRequirements') as UntypedFormArray : null;
   }
 
   selectedFieldPath: string[] = [];
 
   constructor(
     private store: Store<ApplicationState>,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private restService: RestService,
     private uiUtils: UiUtilsService,
     private location: Location,
@@ -278,7 +278,7 @@ export class CapitalInvestmentPlanEditComponent implements OnInit, OnChanges {
   }
 
   public getIndicatorOutcomeControls(indicatorIndex) {
-    return this.indicatorControls ? this.indicatorControls.controls[indicatorIndex].get('outcomes') as FormArray : null;
+    return this.indicatorControls ? this.indicatorControls.controls[indicatorIndex].get('outcomes') as UntypedFormArray : null;
   }
 
   public getCostBreakdownSubtotal() {

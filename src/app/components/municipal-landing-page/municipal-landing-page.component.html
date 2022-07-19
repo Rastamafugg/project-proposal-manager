@@ -143,11 +143,11 @@
         <td mat-cell *matCellDef="let report">{{getFiscalYearLabel(report.fiscalYear)}}</td>
       </ng-container>
       <ng-container matColumnDef="gasTaxExpenditures">
-        <th class="align-right" mat-header-cell *matHeaderCellDef>Gas Tax Expenditures</th>
+        <th class="align-right" mat-header-cell *matHeaderCellDef>Ale Tax Expenditures</th>
         <td class="align-right" mat-cell *matCellDef="let report">{{getGasTaxExpenditures(report) | currency}}</td>
       </ng-container>
       <ng-container matColumnDef="unallocatedGasTaxAmount">
-        <th class="align-right" mat-header-cell *matHeaderCellDef>Unallocated Gas Tax Amount</th>
+        <th class="align-right" mat-header-cell *matHeaderCellDef>Unallocated Ale Tax Amount</th>
         <td class="align-right" mat-cell *matCellDef="let report">{{getUnallocatedGasTaxAmount(report) | currency}}</td>
       </ng-container>
       <ng-container matColumnDef="reportState">

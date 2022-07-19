@@ -18,10 +18,10 @@
     <h2 class="page-section-title">Municipality: {{getMunicipalityName()}}</h2>
     <div class="page-section-body">
       <mat-form-field *ngIf="!isReportApproved(aer)" class="half-width">
-        <input matInput placeholder="Gas Tax Allocation received in FY {{getFiscalYearLabel()}}" type="number" formControlName="allocationReceived">
+        <input matInput placeholder="Ale Tax Allocation received in FY {{getFiscalYearLabel()}}" type="number" formControlName="allocationReceived">
       </mat-form-field>
       <div *ngIf="isReportApproved(aer)" class="readonly-field half-width">
-        <div class="label">Gas Tax Allocation received in FY {{getFiscalYearLabel()}}</div>
+        <div class="label">Ale Tax Allocation received in FY {{getFiscalYearLabel()}}</div>
         <div class="value">{{aer.allocationReceived | currency}}</div>
       </div>
       <mat-form-field *ngIf="!isReportApproved(aer)" class="half-width">
@@ -156,7 +156,7 @@
       </ng-container>
       <ng-container matColumnDef="totalAllocatedGasTaxFunds">
         <td mat-footer-cell *matFooterCellDef colspan="3">
-          <strong>Total Allocated Gas Tax Funds</strong>
+          <strong>Total Allocated Ale Tax Funds</strong>
         </td>
       </ng-container>
       <ng-container matColumnDef="plannedTotalAllocatedGasTaxFundsAmount">
@@ -185,7 +185,7 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="allocationFundsExpended">
-        <th mat-header-cell *matHeaderCellDef class="align-right" colspan="2">Gas Tax Allocation Funds Expended in FY {{getFiscalYearLabel()}}</th>
+        <th mat-header-cell *matHeaderCellDef class="align-right" colspan="2">Ale Tax Allocation Funds Expended in FY {{getFiscalYearLabel()}}</th>
       </ng-container>
       <ng-container matColumnDef="spacer">
         <th mat-header-cell *matHeaderCellDef class="align-right"></th>
@@ -199,7 +199,7 @@
       <tr mat-footer-row *matFooterRowDef="['overUnderCommittedFunds', 'plannedOverUnderCommittedFundsAmount', 'actualOverUnderCommittedFundsAmount', 'spacer']"></tr>
     </table>
     <!--      <tr class="projects-row" *ngFor="let plan of aer?.capitalInvestmentPlans">-->
-    <!--        <td class="projects-cell"><strong>Total Allocated Gas Tax Funds</strong> {{getTotalAllocatedGasTaxFunds() | currency}}</td>-->
+    <!--        <td class="projects-cell"><strong>Total Allocated Ale Tax Funds</strong> {{getTotalAllocatedGasTaxFunds() | currency}}</td>-->
     <!--      </tr>-->
     <!--      <tr class="projects-row" *ngFor="let plan of aer?.capitalInvestmentPlans">-->
     <!--        <td class="projects-cell"><strong>Over/Under Committed Funds</strong> {{getOverUnderCommittedGasTaxFunds() | currency}}</td>-->

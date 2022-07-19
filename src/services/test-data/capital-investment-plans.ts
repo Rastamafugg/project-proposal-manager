@@ -219,6 +219,222 @@ export let INITIAL_CIPS: CapitalInvestmentPlan[] = [
   },
   {
     municipalCode: '0001',
+    projectTitle: 'Mill Upgrade',
+    projectNumber: '2021.1',
+    version: 1,
+    state: PlanState.APPROVED,
+    projectDescription: `Replace the millstone and gears of the mill`,
+    projectLocation: '2 By The Water, Hobbiton',
+    projectMunicipality: 'Hobbiton',
+    projectPostalCode: 'H0B 8I7',
+    projectType: 'RENEWAL',
+    councilResolutionMailed: true,
+    dateOfResolution: new Date('2020/01/31'),
+    costBreakdown: [
+      {
+        id: 1,
+        activityType: 'Design/Engineering',
+        amount: 10000,
+      },
+      {
+        id: 2,
+        activityType: 'Construction/Demolition',
+        amount: 10000,
+      },
+      {
+        id: 3,
+        activityType: 'Contingency',
+        amount: 10000,
+      },
+      {
+        id: 4,
+        activityType: 'Other',
+        amount: 10000,
+      },
+    ],
+    gasTaxExpenditureTimeline: [
+      {year: 2019, plannedAmount: 10000, actualAmount: 0},
+      {year: 2022, plannedAmount: 15000, actualAmount: 0},
+      {year: 2021, plannedAmount: 20000, actualAmount: 0},
+      {year: 2022, plannedAmount: 40000, actualAmount: 0},
+      {year: 2023, plannedAmount: 15000, actualAmount: 0},
+    ],
+    proposedSourcesOfFunding: [
+      {
+        id: 1,
+        fundingSource: 'Ale Tax Direct/Notional Allocation',
+        program: null,
+        confirmed: true,
+        amount: 10000,
+      },
+      {
+        id: 2,
+        fundingSource: 'Applicant\'s Share',
+        program: null,
+        confirmed: true,
+        amount: 10000,
+      },
+      {
+        id: 3,
+        fundingSource: 'Other Regional Source',
+        program: 'Test Regional Program',
+        confirmed: false,
+        amount: 10000,
+      },
+      {
+        id: 4,
+        fundingSource: 'Other Source',
+        program: 'Test Program',
+        confirmed: true,
+        amount: 10000,
+      },
+    ],
+    projectTimelines: [
+      {
+        id: 1,
+        activity: 'TIMELINE-Design/Engineering',
+        startDate: new Date('2022/01/01'),
+        completionDate: new Date('2022/01/15'),
+      },
+      {
+        id: 2,
+        activity: 'TIMELINE-Construction/Demolition',
+        startDate: new Date('2022/01/16'),
+        completionDate: new Date('2022/01/16'),
+      },
+      {
+        id: 3,
+        activity: 'TIMELINE-Contingency',
+        startDate: new Date('2022/01/17'),
+        completionDate: new Date('2022/02/01'),
+      },
+      {
+        id: 4,
+        activity: 'TIMELINE-Other',
+        startDate: new Date('2022/02/01'),
+        completionDate: new Date('2022/03/01'),
+      },
+      {
+        id: 5,
+        activity: 'TIMELINE-ACTIVITY-05',
+        startDate: new Date('2022/01/01'),
+        completionDate: new Date('2022/03/01'),
+      },
+    ],
+    outcomesAndPlanning: [
+      {
+        code: 'OUTCOME-01',
+        selected: true,
+      },
+      {
+        code: 'OUTCOME-02',
+        selected: false,
+      },
+      {
+        code: 'OUTCOME-03',
+        selected: true,
+      },
+      {
+        code: 'OUTCOME-04',
+        selected: false,
+      },
+      {
+        code: 'OUTCOME-05',
+        selected: false,
+      },
+      {
+        code: 'OUTCOME-06',
+        selected: false,
+      },
+      {
+        code: 'OUTCOME-07',
+        selected: false,
+      },
+      {
+        code: 'OUTCOME-08',
+        selected: false,
+      },
+      {
+        code: 'OUTCOME-09',
+        selected: false,
+      },
+      {
+        code: 'OUTCOME-10',
+        selected: false,
+      },
+      {
+        code: 'OUTCOME-11',
+        selected: false,
+      },
+    ],
+    scheduleHIndicators: [
+      {
+        projectCategoryCode: 'disaster-mitigation-infrastructure',
+        outcomes: [
+          {
+            code: '% of services projected to be protected due to the new mitigation infrastructure',
+            selected: true,
+          },
+          {
+            code: '% of properties projected to be less at-risk due to the new mitigation infrastructure',
+            selected: true,
+          },
+          {
+            code: '# or % of population projected to be less at-risk due to the new mitigation infrastructure',
+            selected: false,
+          },
+          {
+            code: '$ of Disaster Financial Assistance Arrangement funding and/or emergency response costs estimated to be reduced due to the new mitigation infrastructure, based on a previous or comparable event',
+            selected: false,
+          },
+          {
+            code: '% of at-risk infrastructure that is better protected as a result of the new mitigation infrastructure',
+            selected: false,
+          },
+          {
+            code: '% of mitigation plan that is implemented',
+            selected: false,
+          },
+        ],
+      }
+    ],
+    programRequirements: [
+      {
+        code: 'REQUIREMENT-01',
+        selected: true,
+      },
+      {
+        code: 'REQUIREMENT-02',
+        selected: false,
+      },
+      {
+        code: 'REQUIREMENT-03',
+        selected: false,
+      },
+      {
+        code: 'REQUIREMENT-04',
+        selected: true,
+      },
+      {
+        code: 'REQUIREMENT-05',
+        selected: false,
+      },
+      {
+        code: 'REQUIREMENT-06',
+        selected: false,
+      },
+      {
+        code: 'REQUIREMENT-07',
+        selected: false,
+      },
+      {
+        code: 'REQUIREMENT-08',
+        selected: false,
+      },
+    ],
+  },
+  {
+    municipalCode: '0001',
     projectTitle: 'Hobbiton Dike',
     projectNumber: '2020.1',
     version: 1,
@@ -694,221 +910,5 @@ export let INITIAL_CIPS: CapitalInvestmentPlan[] = [
         selected: true
       }
     ]
-  },
-  {
-    municipalCode: '0001',
-    projectTitle: 'Mill Upgrade',
-    projectNumber: '2021.1',
-    version: 1,
-    state: PlanState.APPROVED,
-    projectDescription: `Replace the millstone and gears of the mill`,
-    projectLocation: '2 By The Water, Hobbiton',
-    projectMunicipality: 'Hobbiton',
-    projectPostalCode: 'H0B 8I7',
-    projectType: 'RENEWAL',
-    councilResolutionMailed: true,
-    dateOfResolution: new Date('2020/01/31'),
-    costBreakdown: [
-      {
-        id: 1,
-        activityType: 'Design/Engineering',
-        amount: 10000,
-      },
-      {
-        id: 2,
-        activityType: 'Construction/Demolition',
-        amount: 10000,
-      },
-      {
-        id: 3,
-        activityType: 'Contingency',
-        amount: 10000,
-      },
-      {
-        id: 4,
-        activityType: 'Other',
-        amount: 10000,
-      },
-    ],
-    gasTaxExpenditureTimeline: [
-      {year: 2019, plannedAmount: 10000, actualAmount: 0},
-      {year: 2022, plannedAmount: 15000, actualAmount: 0},
-      {year: 2021, plannedAmount: 20000, actualAmount: 0},
-      {year: 2022, plannedAmount: 40000, actualAmount: 0},
-      {year: 2023, plannedAmount: 15000, actualAmount: 0},
-    ],
-    proposedSourcesOfFunding: [
-      {
-        id: 1,
-        fundingSource: 'Ale Tax Direct/Notional Allocation',
-        program: null,
-        confirmed: true,
-        amount: 10000,
-      },
-      {
-        id: 2,
-        fundingSource: 'Applicant\'s Share',
-        program: null,
-        confirmed: true,
-        amount: 10000,
-      },
-      {
-        id: 3,
-        fundingSource: 'Other Regional Source',
-        program: 'Test Regional Program',
-        confirmed: false,
-        amount: 10000,
-      },
-      {
-        id: 4,
-        fundingSource: 'Other Source',
-        program: 'Test Program',
-        confirmed: true,
-        amount: 10000,
-      },
-    ],
-    projectTimelines: [
-      {
-        id: 1,
-        activity: 'TIMELINE-Design/Engineering',
-        startDate: new Date('2022/01/01'),
-        completionDate: new Date('2022/01/15'),
-      },
-      {
-        id: 2,
-        activity: 'TIMELINE-Construction/Demolition',
-        startDate: new Date('2022/01/16'),
-        completionDate: new Date('2022/01/16'),
-      },
-      {
-        id: 3,
-        activity: 'TIMELINE-Contingency',
-        startDate: new Date('2022/01/17'),
-        completionDate: new Date('2022/02/01'),
-      },
-      {
-        id: 4,
-        activity: 'TIMELINE-Other',
-        startDate: new Date('2022/02/01'),
-        completionDate: new Date('2022/03/01'),
-      },
-      {
-        id: 5,
-        activity: 'TIMELINE-ACTIVITY-05',
-        startDate: new Date('2022/01/01'),
-        completionDate: new Date('2022/03/01'),
-      },
-    ],
-    outcomesAndPlanning: [
-      {
-        code: 'OUTCOME-01',
-        selected: true,
-      },
-      {
-        code: 'OUTCOME-02',
-        selected: false,
-      },
-      {
-        code: 'OUTCOME-03',
-        selected: true,
-      },
-      {
-        code: 'OUTCOME-04',
-        selected: false,
-      },
-      {
-        code: 'OUTCOME-05',
-        selected: false,
-      },
-      {
-        code: 'OUTCOME-06',
-        selected: false,
-      },
-      {
-        code: 'OUTCOME-07',
-        selected: false,
-      },
-      {
-        code: 'OUTCOME-08',
-        selected: false,
-      },
-      {
-        code: 'OUTCOME-09',
-        selected: false,
-      },
-      {
-        code: 'OUTCOME-10',
-        selected: false,
-      },
-      {
-        code: 'OUTCOME-11',
-        selected: false,
-      },
-    ],
-    scheduleHIndicators: [
-      {
-        projectCategoryCode: 'disaster-mitigation-infrastructure',
-        outcomes: [
-          {
-            code: '% of services projected to be protected due to the new mitigation infrastructure',
-            selected: true,
-          },
-          {
-            code: '% of properties projected to be less at-risk due to the new mitigation infrastructure',
-            selected: true,
-          },
-          {
-            code: '# or % of population projected to be less at-risk due to the new mitigation infrastructure',
-            selected: false,
-          },
-          {
-            code: '$ of Disaster Financial Assistance Arrangement funding and/or emergency response costs estimated to be reduced due to the new mitigation infrastructure, based on a previous or comparable event',
-            selected: false,
-          },
-          {
-            code: '% of at-risk infrastructure that is better protected as a result of the new mitigation infrastructure',
-            selected: false,
-          },
-          {
-            code: '% of mitigation plan that is implemented',
-            selected: false,
-          },
-        ],
-      }
-    ],
-    programRequirements: [
-      {
-        code: 'REQUIREMENT-01',
-        selected: true,
-      },
-      {
-        code: 'REQUIREMENT-02',
-        selected: false,
-      },
-      {
-        code: 'REQUIREMENT-03',
-        selected: false,
-      },
-      {
-        code: 'REQUIREMENT-04',
-        selected: true,
-      },
-      {
-        code: 'REQUIREMENT-05',
-        selected: false,
-      },
-      {
-        code: 'REQUIREMENT-06',
-        selected: false,
-      },
-      {
-        code: 'REQUIREMENT-07',
-        selected: false,
-      },
-      {
-        code: 'REQUIREMENT-08',
-        selected: false,
-      },
-    ],
   },
 ];

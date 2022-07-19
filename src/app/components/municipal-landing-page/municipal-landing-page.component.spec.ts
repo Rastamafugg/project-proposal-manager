@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MunicipalLandingPageComponent } from './municipal-landing-page.component';
 
@@ -6,7 +6,7 @@ describe('CaoLandingPageComponent', () => {
   let component: MunicipalLandingPageComponent;
   let fixture: ComponentFixture<MunicipalLandingPageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MunicipalLandingPageComponent ]
     })

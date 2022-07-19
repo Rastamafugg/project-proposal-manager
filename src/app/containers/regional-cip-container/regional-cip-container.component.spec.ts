@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MunicipalCipEditContainer } from './municipal-container.component';
 
@@ -6,7 +6,7 @@ describe('MunicipalContainerComponent', () => {
   let component: MunicipalCipEditContainer;
   let fixture: ComponentFixture<MunicipalCipEditContainer>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ MunicipalCipEditContainer ]
     })

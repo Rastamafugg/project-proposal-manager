@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { RegionalLandingPageComponent } from './regional-landing-page.component';
 
@@ -6,7 +6,7 @@ describe('RegionalLandingPageComponent', () => {
   let component: RegionalLandingPageComponent;
   let fixture: ComponentFixture<RegionalLandingPageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RegionalLandingPageComponent ]
     })

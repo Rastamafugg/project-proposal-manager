@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ClickableFieldComponent } from './clickable-field.component';
 
@@ -6,7 +6,7 @@ describe('ClickableFieldComponent', () => {
   let component: ClickableFieldComponent;
   let fixture: ComponentFixture<ClickableFieldComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ClickableFieldComponent ]
     })

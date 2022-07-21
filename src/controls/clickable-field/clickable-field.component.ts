@@ -5,16 +5,13 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   templateUrl: './clickable-field.component.html',
   styleUrls: ['./clickable-field.component.scss']
 })
-export class ClickableFieldComponent implements OnInit {
+export class ClickableFieldComponent {
   @Input() componentPath: string[];
   @Input() selectedComponentPath: string[];
   @Input() readOnlyValue: string;
   @Input() controlName: string;
   @Output() componentSelected: EventEmitter<string[]> = new EventEmitter();
   constructor() { }
-
-  ngOnInit() {
-  }
 
   isSelectedPath() {
     if (!this.componentPath || this.componentPath.length !== this.selectedComponentPath.length) {

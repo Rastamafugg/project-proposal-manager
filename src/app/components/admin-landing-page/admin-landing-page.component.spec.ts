@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AdminLandingPageComponent } from './cao-landing-page.component';
+import { AdminLandingPageComponent } from './admin-landing-page.component';
 
 describe('CaoLandingPageComponent', () => {
   let component: AdminLandingPageComponent;
